@@ -1,0 +1,20 @@
+{
+  "name": "vitalcheer-landingpage",
+  "private": true,
+  "version": "1.0.0",
+  "description": "VitalCheer landing page. Static site; the 3D scenes are bundled into js/scenes3d.bundle.js.",
+  "scripts": {
+    "build:3d": "esbuild js/scenes3d.js --bundle --minify --format=iife --target=es2019 --legal-comments=none --outfile=js/scenes3d.bundle.js",
+    "build:models": "node tools/build-models.mjs",
+    "build": "npm run build:models && npm run build:3d"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "4.1.1",
+    "@gltf-transform/extensions": "4.1.1",
+    "@gltf-transform/functions": "4.1.1",
+    "esbuild": "0.24.0",
+    "meshoptimizer": "0.21.0",
+    "sharp": "0.33.5",
+    "three": "0.169.0"
+  }
+}

@@ -16,7 +16,7 @@ from blender_common import (assign, cut, cyl, decal, empty, export_glb, finalize
                             parent_to, rbox, reset_scene, studio_render, torus, curve_tube)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-OUT = os.path.join(ROOT, "models", "vitalcheer-device.glb")
+OUT = os.path.join(ROOT, "tools", "3d", "out", "vitalcheer-device.glb")  # raw export; then run: npm run build:models
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 PREVIEW = argv[0] if argv else None
 

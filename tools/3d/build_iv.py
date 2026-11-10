@@ -20,7 +20,7 @@ from blender_common import (assign, curve_tube, cut, cyl, decal, empty, export_g
                             finalize, material, parent_to, rbox, reset_scene, torus)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-OUT = os.path.join(ROOT, "models", "iv-set.glb")
+OUT = os.path.join(ROOT, "tools", "3d", "out", "iv-set.glb")  # raw export; then run: npm run build:models
 R = math.radians
 
 reset_scene()

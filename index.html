@@ -8,15 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=18" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-      }
-    }
-  </script>
+  <link rel="preload" href="models/vitalcheer-device.glb?v=5" as="fetch" type="model/gltf-binary" crossorigin="anonymous" />
+  <link rel="stylesheet" href="styles.css?v=23" />
 </head>
 <body>
 <div class="custom-cursor" aria-hidden="true"></div>
@@ -55,18 +48,10 @@
     </div>
 
     <div class="hero-visual">
-      <span class="watermark">VC</span>
-      <div class="radial-glow"></div>
 
       <div class="product-stage">
         <div class="device-3d" data-device-3d role="img"
              aria-label="Interactive 3D model of the VitalCheer flow-control device with its sensor head. Drag to rotate it."></div>
-        <img
-                class="product-image"
-                src="images/vitalcheer-device.jpg"
-                alt="VitalCheer flow-control device with sensor head"
-                onerror="this.style.display='none'"
-        />
         <span class="device-3d-hint" aria-hidden="true">Drag to rotate</span>
       </div>
     </div>
@@ -130,107 +115,6 @@
         </div>
 
         <div class="cc-visual">
-          <svg class="cc-svg" viewBox="0 0 420 640" role="img"
-               aria-label="Illustration of a gravity IV line: fluid bag, drip chamber, roller clamp, tubing and cannula site, with each part highlighted as the related challenge is shown.">
-            <defs>
-              <linearGradient id="cc-fluid" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#0593C6" stop-opacity="0.75" />
-                <stop offset="1" stop-color="#09318D" stop-opacity="0.9" />
-              </linearGradient>
-              <radialGradient id="cc-halo">
-                <stop offset="0" stop-color="#0593C6" stop-opacity="0.55" />
-                <stop offset="1" stop-color="#0593C6" stop-opacity="0" />
-              </radialGradient>
-              <clipPath id="cc-bag-clip">
-                <rect x="150" y="50" width="100" height="150" rx="22" />
-              </clipPath>
-              <symbol id="cc-mini" viewBox="0 0 80 220">
-                <path d="M40 0 V8" />
-                <rect x="10" y="8" width="60" height="90" rx="14" />
-                <rect x="30" y="104" width="20" height="40" rx="6" />
-                <path d="M40 144 V220" />
-              </symbol>
-            </defs>
-
-            <!-- ambient halo -->
-            <circle class="cc-halo" cx="210" cy="300" r="230" fill="url(#cc-halo)" />
-
-            <!-- 04 · other lines on the ward, outside the field of view -->
-            <g class="cc-ward">
-              <circle class="cc-radar" cx="225" cy="330" r="200" />
-              <use href="#cc-mini" x="14" y="36" width="64" height="176" />
-              <use href="#cc-mini" x="60" y="250" width="52" height="143" />
-              <use href="#cc-mini" x="6" y="430" width="48" height="132" />
-            </g>
-
-            <!-- pole + hanger -->
-            <g class="cc-pole">
-              <path d="M300 14 V630" />
-              <path d="M300 30 H200 V50" />
-              <path d="M262 630 H338" />
-            </g>
-
-            <!-- fluid bag -->
-            <g class="cc-part cc-part-bag">
-              <g clip-path="url(#cc-bag-clip)">
-                <rect class="cc-fluid" x="150" y="92" width="100" height="110" fill="url(#cc-fluid)" />
-              </g>
-              <rect class="cc-outline" x="150" y="50" width="100" height="150" rx="22" />
-              <path class="cc-ticks" d="M162 80 h10 M162 100 h6 M162 120 h10 M162 140 h6 M162 160 h10 M162 180 h6" />
-              <rect class="cc-outline" x="192" y="200" width="16" height="20" rx="3" />
-            </g>
-
-            <!-- 02 · drip chamber (drop factor) -->
-            <g class="cc-part cc-part-chamber">
-              <rect class="cc-outline" x="182" y="222" width="36" height="74" rx="11" />
-              <rect class="cc-chamber-fluid" x="184" y="272" width="32" height="22" rx="8" />
-              <circle class="cc-drop" cx="200" cy="236" r="3.6" />
-              <circle class="cc-drop cc-drop-b" cx="200" cy="236" r="3.6" />
-              <path class="cc-drop-ticks" d="M226 232 h8 M226 246 h8 M226 260 h8" />
-            </g>
-
-            <!-- 01 / 05 · PVC tubing -->
-            <g class="cc-part cc-part-tube">
-              <path class="cc-tube" pathLength="1"
-                    d="M200 296 V352 M200 398 C200 470 120 470 128 530 C134 584 232 602 296 574" />
-              <path class="cc-flow"
-                    d="M200 296 V352 M200 398 C200 470 120 470 128 530 C134 584 232 602 296 574" />
-            </g>
-
-            <!-- 01 · roller clamp -->
-            <g class="cc-part cc-part-clamp">
-              <rect class="cc-outline" x="184" y="352" width="32" height="46" rx="7" />
-              <g class="cc-wheel">
-                <circle class="cc-outline" cx="200" cy="372" r="9" />
-                <path class="cc-outline" d="M200 363 V381 M191 372 H209" />
-              </g>
-            </g>
-
-            <!-- 05 · cannula site -->
-            <g class="cc-part cc-part-site">
-              <path class="cc-arm" d="M262 596 L404 556" />
-              <circle class="cc-site-pulse" cx="304" cy="574" r="16" />
-              <rect class="cc-outline cc-cannula" x="290" y="566" width="22" height="10" rx="3" transform="rotate(-16 301 571)" />
-            </g>
-
-            <!-- 03 · bedside log -->
-            <g class="cc-part cc-part-log">
-              <rect class="cc-outline" x="316" y="246" width="66" height="88" rx="6" />
-              <rect class="cc-outline" x="336" y="240" width="26" height="12" rx="3" />
-              <path class="cc-log-line" style="--d:0" d="M328 270 h42" />
-              <path class="cc-log-line" style="--d:1" d="M328 284 h34" />
-              <path class="cc-log-line" style="--d:2" d="M328 298 h42" />
-              <path class="cc-log-line" style="--d:3" d="M328 312 h26" />
-            </g>
-
-            <!-- 06 · conventional pump + proprietary disposable (ghosted) -->
-            <g class="cc-part cc-part-pump">
-              <rect class="cc-ghost" x="314" y="370" width="84" height="76" rx="10" />
-              <rect class="cc-ghost" x="326" y="382" width="40" height="22" rx="3" />
-              <path class="cc-ghost" d="M326 420 h14 M348 420 h14 M326 432 h14 M348 432 h14" />
-              <rect class="cc-ghost" x="374" y="384" width="14" height="50" rx="4" />
-            </g>
-          </svg>
 
           <!-- Hotspots: each one opens the matching challenge -->
           <button class="cc-hot" type="button" data-cc-go="1" style="--x:47.6%;--y:58.1%"
@@ -343,9 +227,7 @@
             </div>
 
             <p>
-              Continuous infrared sensing and micro-calibrated motor
-              adjustments keep every gravity line precise without
-              interrupting care.
+              This feature dynamically regulates the infusion rate and instantly halts fluid delivery when an irregularity or blockage is identified. By removing the need for manual roller-clamp adjustments, it ensures precise delivery continuity and provides an immediate automated safety shutoff to protect the patient from flow errors.
             </p>
           </div>
         </article>
@@ -367,8 +249,7 @@
             </div>
 
             <p>
-              One calm ward view keeps every bedside, line status, and
-              alert visible to the team at once.
+              This aggregates live operational data from every active infusion device across the ward into a single, centralized interface. It gives nursing staff an instant, real-time overview of drip rates, remaining fluid volumes, and device battery levels for every bed, eliminating the need for constant manual checks and ensuring potential issues are spotted across the entire unit at a glance.
             </p>
           </div>
         </article>
@@ -390,8 +271,7 @@
             </div>
 
             <p>
-              Pressure wave stabilization catches subtle changes before
-              micro-extravasation becomes a serious complication.
+              Continuously monitors fluid behavior and surrounding tissue response to identify early-stage fluid leakage before visible swelling or tissue damage occurs. By detecting subtle flow anomalies and localized physical changes at the infusion site, it automatically triggers safety protocols halting flow and alerting staff before painful subcutaneous buildup can develop.
             </p>
           </div>
         </article>
@@ -413,8 +293,7 @@
             </div>
 
             <p>
-              Translate prescription volume and target duration into an
-              exact, actionable flow rate in seconds.
+              Calculates optimal dosage amounts and precise infusion flow rates based on patient-specific parameters such as age, weight, and clinical condition. By replacing manual calculation steps at the bedside, it eliminates dangerous dosing errors, guarantees accurate flow speed recommendations, and streamlines the medication setup process for nursing staff.
             </p>
           </div>
         </article>
@@ -450,13 +329,12 @@
         </button>
         <div class="utility-content" id="utility-01">
           <h3>Continuous Data Recording</h3>
-          <p class="utility-text">Automated event logging exported straight to EHR systems.</p>
           <div class="utility-reveal">
             <div class="utility-media">
               <img src="images/continuous-data-recording.png" alt="" loading="lazy" onerror="this.remove()" />
               <span>Image · images/continuous-data-recording.png</span>
             </div>
-            <p class="utility-desc">Add a longer description of Continuous Data Recording here: how it works on the ward, who it helps, and what makes it different.</p>
+            <p class="utility-desc">Replaces tedious manual record-keeping by automatically capturing every infusion start time, volume change, and operational event in real time. This eliminates human error during data entry, saves valuable nursing time during shift logs, and maintains an accurate, digital timeline of the entire treatment process.</p>
           </div>
         </div>
       </li>
@@ -469,13 +347,12 @@
         </button>
         <div class="utility-content" id="utility-02">
           <h3>Battery &amp; Low Liquid Alerts</h3>
-          <p class="utility-text">Dual-stage audio-visual depletion alerts keep teams ahead.</p>
           <div class="utility-reveal">
             <div class="utility-media">
               <img src="images/battery-low-liquid-alerts.png" alt="" loading="lazy" onerror="this.remove()" />
               <span>Image · images/battery-low-liquid-alerts.png</span>
             </div>
-            <p class="utility-desc">Add a longer description of Battery &amp; Low Liquid Alerts here: how it works on the ward, who it helps, and what makes it different.</p>
+            <p class="utility-desc">Provides instant, automated warnings when device battery levels drop below operational thresholds or when liquid moisture is detected near sensitive electronic components. This ensures preemptive battery replacement before power failure occurs and protects the internal hardware from potential liquid exposure, safeguarding continuous device reliability during patient treatments.</p>
           </div>
         </div>
       </li>
@@ -488,37 +365,17 @@
         </button>
         <div class="utility-content" id="utility-03">
           <h3>Mobile Alerting Plus</h3>
-          <p class="utility-text">Real-time push notifications sent to nurse pagers and smart devices.</p>
           <div class="utility-reveal">
             <div class="utility-media">
               <img src="images/mobile-alerting-plus.png" alt="" loading="lazy" onerror="this.remove()" />
               <span>Image · images/mobile-alerting-plus.png</span>
             </div>
-            <p class="utility-desc">Add a longer description of Mobile Alerting Plus here: how it works on the ward, who it helps, and what makes it different.</p>
-          </div>
-        </div>
-      </li>
-      <!-- Utility 04 (template): edit the title/text, drop the image in images/, and write the longer description -->
-      <li class="utility">
-        <button class="utility-trigger" type="button" aria-expanded="false" aria-controls="utility-04">
-          <span class="utility-num">04</span>
-          <svg class="utility-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 6.5h7M9 11h.01M12 11h.01M15 11h.01M9 14.5h.01M12 14.5h.01M15 14.5h.01M9 18h.01M12 18h3"/></svg>
-          <span class="utility-spine" aria-hidden="true">Precision Dose Calculator</span>
-        </button>
-        <div class="utility-content" id="utility-04">
-          <h3>Precision Dose Calculator</h3>
-          <p class="utility-text">Zero-error conversions from prescription to patient-ready flow rate.</p>
-          <div class="utility-reveal">
-            <div class="utility-media">
-              <img src="images/precision-dose-calculator.png" alt="" loading="lazy" onerror="this.remove()" />
-              <span>Image · images/precision-dose-calculator.png</span>
-            </div>
-            <p class="utility-desc">Add a longer description of Precision Dose Calculator here: how it works on the ward, who it helps, and what makes it different.</p>
+            <p class="utility-desc">Pushes clean, immediate push notifications directly to nursing staff mobile devices whenever an anomaly, low battery, or flow interruption occurs. By delivering patient name, bed number, and specific alert details straight to the caregiver's hands, it eliminates the need for stationary monitoring stations and ensures rapid response times from anywhere in the facility.</p>
           </div>
         </div>
       </li>
     </ul>
-    <p class="utilities-hint">04 everyday tools · hover a card to read more</p>
+    <p class="utilities-hint">03 everyday tools · hover a card to read more</p>
   </section>
 
   <section class="workflow section-shell" id="how-it-works">
@@ -703,95 +560,86 @@
         </div>
         <h2 id="about-title">The people building <em>VitalCheer.</em></h2>
       </div>
-      <p>
-        A team of five building VitalCheer through the Agile Team Project,
-        Informatics Institute of Technology / University of Westminster.
-      </p>
     </div>
 
     <ul class="team">
-      <!-- Team member 1: edit name, role and links; add a portrait at images/team/member-1.jpg (4:5 works best) -->
+      <!-- Savindu Arandara: add a portrait at images/team/member-1.jpg (4:5 works best) -->
       <li class="member">
         <figure class="member-photo">
-          <img src="images/team/member-1.jpg" alt="Portrait of team member 1" loading="lazy" onerror="this.remove()" />
-          <span class="member-monogram" aria-hidden="true">VC</span>
+          <img src="images/team/member-1.jpg?v=2" alt="Portrait of Savindu Arandara" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">SA</span>
         </figure>
         <div class="member-body">
-          <span class="member-index">01</span>
-          <h3 class="member-name">Team member 1</h3>
-          <p class="member-role">Role / responsibility</p>
+          <h3 class="member-name">Savindu Arandara</h3>
+          <p class="member-role">Cofounder · Product Engineering</p>
           <ul class="member-links">
-            <li><a href="#" aria-label="LinkedIn profile of team member 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
-            <li><a href="#" aria-label="GitHub profile of team member 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
-            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+            <li><a href="https://www.linkedin.com/in/savindu-arandara/" target="_blank" rel="noopener" aria-label="Savindu on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="https://github.com/nimnetharandara-a11y" target="_blank" rel="noopener" aria-label="Savindu on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:nimnetharandara@gmail.com" aria-label="Email Savindu"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
           </ul>
         </div>
       </li>
-      <!-- Team member 2: edit name, role and links; add a portrait at images/team/member-2.jpg (4:5 works best) -->
+      <!-- Zehna Anas: add a portrait at images/team/member-2.jpg (4:5 works best) -->
       <li class="member">
         <figure class="member-photo">
-          <img src="images/team/member-2.jpg" alt="Portrait of team member 2" loading="lazy" onerror="this.remove()" />
-          <span class="member-monogram" aria-hidden="true">VC</span>
+          <img src="images/team/member-2.jpg?v=2" alt="Portrait of Zehna Anas" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">ZA</span>
         </figure>
         <div class="member-body">
-          <span class="member-index">02</span>
-          <h3 class="member-name">Team member 2</h3>
-          <p class="member-role">Role / responsibility</p>
+          <h3 class="member-name">Zehna Anas</h3>
+          <p class="member-role">Cofounder · Product Engineering</p>
           <ul class="member-links">
-            <li><a href="#" aria-label="LinkedIn profile of team member 2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
-            <li><a href="#" aria-label="GitHub profile of team member 2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
-            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 2"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+            <li><a href="https://www.linkedin.com/in/zehna-anas-9998b1387/" target="_blank" rel="noopener" aria-label="Zehna on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="https://github.com/ZehnaAnas" target="_blank" rel="noopener" aria-label="Zehna on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:anaszehna7@gmail.com" aria-label="Email Zehna"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
           </ul>
         </div>
       </li>
-      <!-- Team member 3: edit name, role and links; add a portrait at images/team/member-3.jpg (4:5 works best) -->
+      <!-- Akindu Insara: add a portrait at images/team/member-3.jpg (4:5 works best) -->
       <li class="member">
         <figure class="member-photo">
-          <img src="images/team/member-3.jpg" alt="Portrait of team member 3" loading="lazy" onerror="this.remove()" />
-          <span class="member-monogram" aria-hidden="true">VC</span>
+          <img src="images/team/member-3.jpg?v=2" alt="Portrait of Akindu Insara" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">AI</span>
         </figure>
         <div class="member-body">
-          <span class="member-index">03</span>
-          <h3 class="member-name">Team member 3</h3>
-          <p class="member-role">Role / responsibility</p>
+          <h3 class="member-name">Akindu Insara</h3>
+          <p class="member-role">Cofounder · Design Engineering</p>
           <ul class="member-links">
-            <li><a href="#" aria-label="LinkedIn profile of team member 3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
-            <li><a href="#" aria-label="GitHub profile of team member 3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
-            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+            <li><a href="https://www.linkedin.com/in/akindu-insara" target="_blank" rel="noopener" aria-label="Akindu on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="https://github.com/Akinduu" target="_blank" rel="noopener" aria-label="Akindu on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:akindu20007@gmail.com" aria-label="Email Akindu"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
           </ul>
         </div>
       </li>
-      <!-- Team member 4: edit name, role and links; add a portrait at images/team/member-4.jpg (4:5 works best) -->
+      <!-- Manisha Fernando: add a portrait at images/team/member-4.jpg (4:5 works best) -->
       <li class="member">
         <figure class="member-photo">
-          <img src="images/team/member-4.jpg" alt="Portrait of team member 4" loading="lazy" onerror="this.remove()" />
-          <span class="member-monogram" aria-hidden="true">VC</span>
+          <img src="images/team/member-4.jpg?v=2" alt="Portrait of Manisha Fernando" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">MF</span>
         </figure>
         <div class="member-body">
-          <span class="member-index">04</span>
-          <h3 class="member-name">Team member 4</h3>
-          <p class="member-role">Role / responsibility</p>
+          <h3 class="member-name">Manisha Fernando</h3>
+          <p class="member-role">Cofounder · Design Engineering</p>
           <ul class="member-links">
-            <li><a href="#" aria-label="LinkedIn profile of team member 4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
-            <li><a href="#" aria-label="GitHub profile of team member 4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
-            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 4"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+            <li><a href="https://www.linkedin.com/in/manishafernando" target="_blank" rel="noopener" aria-label="Manisha on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="https://github.com/manishafdo7" target="_blank" rel="noopener" aria-label="Manisha on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:manisha.20240567@iit.ac.lk" aria-label="Email Manisha"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
           </ul>
         </div>
       </li>
-      <!-- Team member 5: edit name, role and links; add a portrait at images/team/member-5.jpg (4:5 works best) -->
+      <!-- Tharusha Gnanawardhana: add a portrait at images/team/member-5.jpg (4:5 works best) -->
       <li class="member">
         <figure class="member-photo">
-          <img src="images/team/member-5.jpg" alt="Portrait of team member 5" loading="lazy" onerror="this.remove()" />
-          <span class="member-monogram" aria-hidden="true">VC</span>
+          <img src="images/team/member-5.jpg?v=2" alt="Portrait of Tharusha Gnanawardhana" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">TG</span>
         </figure>
         <div class="member-body">
-          <span class="member-index">05</span>
-          <h3 class="member-name">Team member 5</h3>
-          <p class="member-role">Role / responsibility</p>
+          <h3 class="member-name">Tharusha Gnanawardhana</h3>
+          <p class="member-role">Cofounder · Systems Engineering</p>
           <ul class="member-links">
-            <li><a href="#" aria-label="LinkedIn profile of team member 5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
-            <li><a href="#" aria-label="GitHub profile of team member 5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
-            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 5"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+            <li><a href="https://www.linkedin.com/in/tharusha-gnanawardana" target="_blank" rel="noopener" aria-label="Tharusha on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="https://www.github.com/tharusha9009" target="_blank" rel="noopener" aria-label="Tharusha on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:tharushalakshan901@gmail.com" aria-label="Email Tharusha"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
           </ul>
         </div>
       </li>
@@ -870,6 +718,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="script.js?v=16"></script>
-<script type="module" src="js/scenes3d.js?v=16"></script>
+<script src="js/scenes3d.bundle.js?v=18" defer></script>
 </body>
 </html>

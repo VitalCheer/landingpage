@@ -4,15 +4,45 @@
  *    drag-to-rotate (it also turns gently as the hero scrolls).
  *  - Clinical challenge: a gravity IV set (models/iv-set.glb) whose camera
  *    travels to the part that matches the active challenge.
- * Models are built in Blender by tools/3d/*.py.
- * If WebGL or the models are unavailable, the static image / SVG stay visible.
+ * Models are built in Blender by tools/3d/*.py and compressed by tools/build-models.mjs.
+ *
+ * Bundled with esbuild into js/scenes3d.bundle.js (a plain script), so it also
+ * runs when index.html is opened straight from disk:  npm run build
  */
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const loader = new GLTFLoader();
+loader.setMeshoptDecoder(MeshoptDecoder);
+
+const MODEL_VERSION = "5";
+const fromDisk = location.protocol === "file:";
+let embeddedModels = null;
+
+/** Browsers block fetching files from file:// pages, so read the embedded copies instead. */
+function loadEmbeddedModels() {
+    if (!embeddedModels) {
+        embeddedModels = new Promise((resolve, reject) => {
+            if (window.__VC_MODELS) return resolve(window.__VC_MODELS);
+            const tag = document.createElement("script");
+            tag.src = "js/models-data.js";
+            tag.onload = () => resolve(window.__VC_MODELS);
+            tag.onerror = reject;
+            document.head.append(tag);
+        });
+    }
+    return embeddedModels;
+}
+
+async function loadModel(name) {
+    if (!fromDisk) return loader.loadAsync(`models/${name}.glb?v=${MODEL_VERSION}`);
+    const data = await loadEmbeddedModels();
+    const bin = Uint8Array.from(atob(data[name]), (c) => c.charCodeAt(0));
+    return loader.parseAsync(bin.buffer, "");
+}
 
 const hasWebGL = (() => {
     try {
@@ -27,13 +57,13 @@ const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const damp = (current, target, lambda, dt) =>
     current + (target - current) * (1 - Math.exp(-lambda * dt));
 
-function makeRenderer(host) {
+function makeRenderer(host, maxPixelRatio = 1.75) {
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
         powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.shadowMap.enabled = true;
@@ -148,7 +178,7 @@ async function initHeroDevice() {
     floor.receiveShadow = true;
     scene.add(floor);
 
-    const gltf = await loader.loadAsync("models/vitalcheer-device.glb?v=4");
+    const gltf = await loadModel("vitalcheer-device");
     const model = gltf.scene;
     prepareDecals(model);
     model.traverse((o) => {
@@ -209,9 +239,12 @@ async function initHeroDevice() {
         if (node) parts[name] = { node, pos: node.position.clone(), rot: node.rotation.clone() };
     }
 
-    host.appendChild(renderer.domElement);
     fitRenderer(host, renderer, camera);
+    // compile every shader up front so the first frames (and scrolling back) never stutter
+    await renderer.compileAsync(scene, camera);
+    host.appendChild(renderer.domElement);
     host.closest(".product-stage")?.classList.add("has-3d");
+    requestAnimationFrame(() => renderer.domElement.classList.add("is-ready"));
 
     // ---- interaction: drag to turn (horizontal); the device never opens up
     let drag = 0;
@@ -348,7 +381,8 @@ async function initIVScene() {
     const host = section?.querySelector(".cc-visual");
     if (!host) return;
 
-    const renderer = makeRenderer(host);
+    // glass + fluid materials are heavy, so this scene renders at a lower pixel ratio
+    const renderer = makeRenderer(host, 1.25);
     const scene = new THREE.Scene();
     scene.environment = studioEnvironment(renderer);
     scene.environmentIntensity = 0.42;
@@ -372,7 +406,7 @@ async function initIVScene() {
     scene.add(rimLight);
     scene.add(new THREE.HemisphereLight(0xd9f6f2, 0x03201e, 0.45));
 
-    const gltf = await loader.loadAsync("models/iv-set.glb?v=3");
+    const gltf = await loadModel("iv-set");
     const root = gltf.scene;
     retuneMaterials(root);
     prepareDecals(root);
@@ -401,6 +435,8 @@ async function initIVScene() {
     const byName = (n) => root.getObjectByName(n);
     const drop = byName("Drop");
     const dropY0 = drop ? drop.position.y : 0;
+    // compressed models keep each mesh's real size in its node scale, so animate relative to it
+    const dropScale0 = drop ? drop.scale.clone() : null;
     const wheel = byName("ClampWheelPivot");
     const pump = byName("Pump");
     const cannula = byName("Cannula");
@@ -446,9 +482,11 @@ async function initIVScene() {
     }
     scene.add(ring);
 
-    host.prepend(renderer.domElement);
     fitRenderer(host, renderer, camera);
+    await renderer.compileAsync(scene, camera);
+    host.prepend(renderer.domElement);
     section.classList.add("has-3d");
+    requestAnimationFrame(() => renderer.domElement.classList.add("is-ready"));
     if (new URLSearchParams(location.search).has("debug3d")) {
         window.__iv = { THREE, scene, camera, renderer, root };
     }
@@ -517,7 +555,7 @@ async function initIVScene() {
             const period = stage === 2 ? 0.75 : 1.5;
             const phase = still ? 0.5 : (t % period) / period;
             drop.position.y = dropY0 - 0.55 * phase * phase;
-            drop.scale.setScalar(phase > 0.92 ? 1 - (phase - 0.92) * 10 : 1);
+            drop.scale.copy(dropScale0).multiplyScalar(phase > 0.92 ? 1 - (phase - 0.92) * 10 : 1);
         }
         // roller clamp wheel drift (challenge 01)
         if (wheel) {
@@ -552,6 +590,27 @@ async function initIVScene() {
 }
 
 if (hasWebGL) {
-    initHeroDevice().catch((err) => console.warn("3D device unavailable:", err));
-    initIVScene().catch((err) => console.warn("3D IV scene unavailable:", err));
+    // Hero first (it is on screen), then the IV scene: straight away if the reader
+    // is already near it (e.g. reloaded mid-page), otherwise once the hero is ready.
+    const hero = initHeroDevice().catch((err) => console.warn("3D device unavailable:", err));
+    const ivSection = document.querySelector(".cc");
+    let ivStarted = false;
+    const startIV = () => {
+        if (ivStarted) return;
+        ivStarted = true;
+        initIVScene().catch((err) => console.warn("3D IV scene unavailable:", err));
+    };
+    if (ivSection) {
+        const near = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                near.disconnect();
+                startIV();
+            }
+        }, { rootMargin: "1200px 0px" });
+        near.observe(ivSection);
+    }
+    hero.then(() => {
+        const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 300));
+        idle(startIV);
+    });
 }

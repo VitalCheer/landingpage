@@ -983,9 +983,7 @@ textarea {
     padding: 18px;
     gap: clamp(28px, 6vw, 90px);
     border: 1px solid var(--line);
-    background:
-            linear-gradient(110deg, rgba(227, 244, 236, 0.75), #fff 58%),
-            #fff;
+    background: #fff;
     overflow: hidden;
     transition:
             transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
@@ -1712,202 +1710,6 @@ textarea {
     overflow: visible;
 }
 
-/* base strokes */
-.cc-svg .cc-outline,
-.cc-svg .cc-pole path,
-.cc-svg .cc-ticks,
-.cc-svg .cc-drop-ticks,
-.cc-svg .cc-log-line {
-    fill: none;
-    stroke: var(--sky-mist);
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.cc-svg .cc-pole path {
-    stroke: rgba(205, 235, 246, 0.28);
-    stroke-width: 3;
-}
-
-.cc-svg .cc-ticks,
-.cc-svg .cc-drop-ticks {
-    stroke-opacity: 0.4;
-}
-
-.cc-svg .cc-part-bag .cc-outline {
-    fill: rgba(205, 235, 246, 0.05);
-}
-
-.cc-fluid {
-    transform-box: fill-box;
-    transform-origin: bottom;
-    transform: scaleY(calc(1 - var(--cc-progress) * 0.35));
-}
-
-.cc-chamber-fluid {
-    fill: url(#cc-fluid);
-    opacity: 0.85;
-}
-
-.cc-drop {
-    fill: var(--cc-glow);
-    transform-box: fill-box;
-    animation: cc-drop 1.6s cubic-bezier(0.55, 0, 1, 0.45) infinite;
-}
-
-.cc-drop-b {
-    animation-delay: 0.8s;
-}
-
-.cc-tube {
-    fill: none;
-    stroke: rgba(205, 235, 246, 0.55);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 2.4s 0.5s cubic-bezier(0.65, 0, 0.35, 1), stroke 0.5s;
-}
-
-.cc.is-inview .cc-tube {
-    stroke-dashoffset: 0;
-}
-
-.cc-flow {
-    fill: none;
-    stroke: var(--cc-glow);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-dasharray: 2 16;
-    opacity: 0;
-    animation: cc-flow 1.4s linear infinite;
-    transition: opacity 0.6s 2.4s;
-}
-
-.cc.is-inview .cc-flow {
-    opacity: 0.85;
-}
-
-.cc-wheel {
-    transform-box: fill-box;
-    transform-origin: center;
-}
-
-.cc-arm {
-    fill: none;
-    stroke: rgba(205, 235, 246, 0.1);
-    stroke-width: 46;
-    stroke-linecap: round;
-}
-
-.cc-site-pulse {
-    fill: rgba(216, 57, 149, 0.12);
-    stroke: none;
-    transform-box: fill-box;
-    transform-origin: center;
-    opacity: 0;
-}
-
-.cc-log-line {
-    stroke-dasharray: 44;
-    stroke-dashoffset: 0;
-}
-
-.cc-ghost {
-    fill: none;
-    stroke: var(--sky-mist);
-    stroke-width: 1.4;
-    stroke-dasharray: 4 5;
-}
-
-.cc-halo {
-    opacity: 0.5;
-}
-
-/* parts dim/brighten with the active stage */
-.cc-part,
-.cc-ward {
-    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s;
-}
-
-.cc-ward {
-    opacity: 0;
-}
-
-.cc-ward use {
-    fill: none;
-    stroke: rgba(205, 235, 246, 0.5);
-    stroke-width: 3;
-}
-
-.cc-radar {
-    fill: none;
-    stroke: var(--cc-glow);
-    stroke-width: 1;
-    stroke-dasharray: 3 7;
-    opacity: 0.5;
-}
-
-.cc:not([data-stage="0"]) .cc-part {
-    opacity: 0.28;
-}
-
-.cc[data-stage="1"] .cc-part-clamp,
-.cc[data-stage="1"] .cc-part-tube,
-.cc[data-stage="2"] .cc-part-chamber,
-.cc[data-stage="2"] .cc-part-bag,
-.cc[data-stage="3"] .cc-part-log,
-.cc[data-stage="5"] .cc-part-site,
-.cc[data-stage="5"] .cc-part-tube,
-.cc[data-stage="6"] .cc-part-pump {
-    opacity: 1;
-    filter: drop-shadow(0 0 10px rgba(216, 57, 149, 0.55));
-}
-
-.cc[data-stage="4"] .cc-part {
-    opacity: 0.7;
-}
-
-/* the conventional pump only appears for challenge 06 */
-.cc:not([data-stage="6"]) .cc-part-pump {
-    opacity: 0;
-}
-
-.cc[data-stage="4"] .cc-ward {
-    opacity: 1;
-}
-
-.cc[data-stage="1"] .cc-wheel {
-    animation: cc-drift 2.6s ease-in-out infinite alternate;
-}
-
-.cc[data-stage="1"] .cc-flow {
-    animation: cc-flow-unstable 2.6s ease-in-out infinite;
-}
-
-.cc[data-stage="2"] .cc-drop {
-    animation-duration: 1s;
-}
-
-.cc[data-stage="2"] .cc-drop-b {
-    animation-delay: 0.5s;
-}
-
-.cc[data-stage="3"] .cc-log-line {
-    animation: cc-write 1.4s cubic-bezier(0.65, 0, 0.35, 1) both;
-    animation-delay: calc(var(--d) * 0.25s);
-}
-
-.cc[data-stage="5"] .cc-site-pulse {
-    animation: cc-pulse 2.2s ease-out infinite;
-}
-
-.cc[data-stage="5"] .cc-tube,
-.cc[data-stage="1"] .cc-tube {
-    stroke: var(--sky-mist);
-}
-
 /* ---------- Hotspots ---------- */
 
 .cc-hot {
@@ -2226,39 +2028,6 @@ textarea {
     to { top: 100%; }
 }
 
-@keyframes cc-drop {
-    0% { transform: translateY(0); opacity: 0; }
-    12% { opacity: 1; }
-    82% { transform: translateY(32px); opacity: 1; }
-    100% { transform: translateY(34px); opacity: 0; }
-}
-
-@keyframes cc-flow {
-    to { stroke-dashoffset: -36; }
-}
-
-@keyframes cc-flow-unstable {
-    0% { stroke-dashoffset: 0; }
-    35% { stroke-dashoffset: -60; }
-    60% { stroke-dashoffset: -66; }
-    100% { stroke-dashoffset: -110; }
-}
-
-@keyframes cc-drift {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-38deg); }
-}
-
-@keyframes cc-write {
-    from { stroke-dashoffset: 44; }
-    to { stroke-dashoffset: 0; }
-}
-
-@keyframes cc-pulse {
-    0% { transform: scale(0.6); opacity: 0.9; }
-    100% { transform: scale(2.4); opacity: 0; }
-}
-
 @keyframes cc-ring {
     0% { transform: scale(1); opacity: 0.8; }
     100% { transform: scale(2); opacity: 0; }
@@ -2403,34 +2172,14 @@ textarea {
         opacity: 1;
     }
 
-    .cc-tube {
-        stroke-dashoffset: 0;
-    }
 
-    .cc-drop,
-    .cc-flow,
     .cc-scroll-line::after,
-    .cc[data-stage] .cc-wheel,
-    .cc[data-stage] .cc-flow,
-    .cc[data-stage] .cc-site-pulse,
-    .cc[data-stage] .cc-log-line,
     .cc-hot.is-active .cc-hot-dot::before {
         animation: none !important;
     }
 
-    .cc-drop {
-        opacity: 0.8;
-        transform: translateY(16px);
-    }
 
-    .cc-flow {
-        opacity: 0.85;
-    }
 
-    .cc[data-stage="5"] .cc-site-pulse {
-        opacity: 0.8;
-        transform: scale(1.6);
-    }
 }
 
 
@@ -2491,17 +2240,19 @@ textarea {
    ========================================================== */
 
 .advisors {
-    margin-top: -48px;
-    padding-top: 24px;
-    padding-bottom: 110px;
+    margin-top: 0;
+    padding-top: 64px;
+    padding-bottom: 72px;
+    border-top: 1px solid rgba(9, 49, 141, 0.08);
+    border-bottom: 1px solid rgba(9, 49, 141, 0.08);
     text-align: center;
     position: relative;
     z-index: 1;
 }
 
 .advisors-title {
-    margin: 0 0 52px;
-    font-size: 18px;
+    margin: 0 0 42px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -2523,8 +2274,8 @@ textarea {
 }
 
 .advisors-logos li {
-    --logo-h: 78px;
-    height: 96px;
+    --logo-h: 66px;
+    height: 82px;
     display: grid;
     place-items: center;
 }
@@ -2548,13 +2299,13 @@ textarea {
 
 /* wide wordmarks read larger than square badges at the same height */
 /* optical sizing: wide wordmarks read larger than square badges */
-.advisors-logos img[src*="westminster"] { --logo-h: 56px; }
-.advisors-logos img[src*="atp"] { --logo-h: 64px; }
-.advisors-logos img[src*="hospitals"] { --logo-h: 96px; }
+.advisors-logos img[src*="westminster"] { --logo-h: 47px; }
+.advisors-logos img[src*="atp"] { --logo-h: 54px; }
+.advisors-logos img[src*="hospitals"] { --logo-h: 82px; }
 
 .advisors-slot {
-    width: 170px;
-    height: 76px !important;
+    width: 156px;
+    height: 64px !important;
     border: 1px dashed rgba(9, 49, 141, 0.25);
     border-radius: 10px;
     color: rgba(9, 49, 141, 0.45);
@@ -2644,12 +2395,10 @@ textarea {
     height: 100%;
     object-fit: cover;
     z-index: 1;
-    filter: grayscale(1);
-    transition: filter 0.5s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .member:hover .member-photo img {
-    filter: none;
     transform: scale(1.04);
 }
 
@@ -3577,4 +3326,93 @@ html.lenis body {
 
 .contact-dialog .button-accent {
     font-size: 13px;
+}
+
+
+/* ---- Utilities: open panel = title, then image and description centred below ---- */
+.utilities {
+    height: clamp(560px, 76vh, 700px);
+}
+
+.utility-content {
+    align-items: center;
+    text-align: center;
+}
+
+.utility-reveal {
+    flex: 1;
+    width: 100%;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    text-align: center;
+}
+
+.utility-media {
+    width: min(460px, 100%);
+    aspect-ratio: 16 / 10;
+    flex: none;
+}
+
+.utility-desc {
+    max-width: 560px;
+    font-size: 15px;
+}
+
+@media (max-width: 850px) {
+    .utilities {
+        height: auto;
+    }
+
+    .utility-reveal {
+        margin-top: 22px;
+    }
+}
+
+/* About: heading stands alone now */
+.about-head {
+    display: block;
+}
+
+
+/* ==========================================================
+   3D only: no placeholder art underneath, canvases fade in
+   ========================================================== */
+.device-3d {
+    display: block;
+}
+
+.product-stage {
+    min-height: min(74vh, 640px);
+    filter: none;
+}
+
+.product-stage::after {
+    display: none;
+}
+
+.scene3d-canvas {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.scene3d-canvas.is-ready {
+    opacity: 1;
+}
+
+/* hotspots only appear once the 3D IV set is there to point at */
+.cc:not(.has-3d) .cc-hot {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.cc .cc-visual {
+    aspect-ratio: auto;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
 }
