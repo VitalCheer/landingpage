@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VitalCheer — intelligent infusion control for every gravity line." />
+  <title>VitalCheer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=18" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+<div class="custom-cursor" aria-hidden="true"></div>
+<div class="page-noise" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="#top" aria-label="VitalCheer home">
+        <img class="brand-logo" src="images/logo.png" alt="" width="40" height="35" />
+    <span>VitalCheer</span>
+  </a>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="#overview">Overview</a>
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#about">About Us</a>
+  </nav>
+
+  <a class="button button-dark" href="#contact">
+    Contact Us <span>↗</span>
+  </a>
+</header>
+
+<main id="top">
+  <section class="hero section-shell">
+    <div class="hero-copy">
+      <h1>
+        <em> Smart </em> infusion monitoring
+        <span>&amp;</span> controlling system.
+      </h1>
+
+      <p class="serif-lead">
+        Precision Control Meets Clinical Calm.
+        <i>Intelligent Infusion Control for Every Gravity Line.</i>
+      </p>
+    </div>
+
+    <div class="hero-visual">
+      <span class="watermark">VC</span>
+      <div class="radial-glow"></div>
+
+      <div class="product-stage">
+        <div class="device-3d" data-device-3d role="img"
+             aria-label="Interactive 3D model of the VitalCheer flow-control device with its sensor head. Drag to rotate it."></div>
+        <img
+                class="product-image"
+                src="images/vitalcheer-device.jpg"
+                alt="VitalCheer flow-control device with sensor head"
+                onerror="this.style.display='none'"
+        />
+        <span class="device-3d-hint" aria-hidden="true">Drag to rotate</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ Research advisors (logo strip) ============
+       To add a partner: copy one <li> and swap the image + alt text.
+       Logos live in images/partners/ (transparent PNG, any size). -->
+  <section class="advisors section-shell" id="advisors" aria-labelledby="advisors-title">
+    <h2 class="advisors-title" id="advisors-title">Research advisors</h2>
+    <ul class="advisors-logos">
+      <li><img src="images/partners/iit.png" alt="Informatics Institute of Technology" width="372" height="153" /></li>
+      <li><img src="images/partners/westminster.png" alt="University of Westminster" width="500" height="118" /></li>
+      <li><img src="images/partners/atp.png" alt="Agile Team Project" width="131" height="76" /></li>
+      <li><img src="images/partners/park-hospitals.png" alt="Park Hospitals (Private) Limited" width="197" height="193" /></li>
+      <li><img src="images/partners/lanka-hospitals.png" alt="Lanka Hospitals" width="184" height="200" /></li>
+      <li class="advisors-slot" aria-hidden="true">
+        <!-- Template slot: replace this <li> with
+             <li><img src="images/partners/your-partner.png" alt="Partner name" /></li> -->
+        <span>Partner logo</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ Clinical challenge: scroll-driven story ============ -->
+  <section class="cc" id="overview" data-stage="0" aria-labelledby="cc-title">
+    <div class="cc-grid section-shell">
+
+      <header class="cc-intro">
+        <div class="eyebrow cc-eyebrow">
+          The clinical challenge
+        </div>
+
+        <h2 class="cc-title" id="cc-title">
+          <span class="cc-line"><span class="cc-word" style="--i:0">IV</span> <span class="cc-word" style="--i:1">infusion</span></span>
+          <span class="cc-line"><span class="cc-word" style="--i:2">shouldn't</span> <span class="cc-word" style="--i:3">be</span> <span class="cc-word" style="--i:4">a</span></span>
+          <span class="cc-line"><span class="cc-word" style="--i:5">matter</span> <span class="cc-word" style="--i:6">of</span></span>
+          <span class="cc-line"><em class="cc-word" style="--i:7">guesswork.</em></span>
+        </h2>
+
+        <p class="cc-lead">
+          Traditional IV systems rely heavily on manual adjustments,
+          periodic observation, and human calculations. These limitations
+          create avoidable risks for patients and additional pressure for
+          healthcare professionals.
+        </p>
+
+        <a class="cc-scroll-cue" href="#cc-step-1">
+          <span class="cc-scroll-line" aria-hidden="true"></span>
+          Scroll through the six challenges
+        </a>
+      </header>
+
+      <!-- Sticky visual: one gravity IV line, highlighted stage by stage -->
+      <div class="cc-stage">
+        <div class="cc-hud" aria-hidden="true">
+          <span class="cc-hud-count"><b>00</b> / 06</span>
+          <span class="cc-hud-title">Gravity IV line</span>
+          <span class="cc-hud-bar"><i></i></span>
+        </div>
+
+        <div class="cc-visual">
+          <svg class="cc-svg" viewBox="0 0 420 640" role="img"
+               aria-label="Illustration of a gravity IV line: fluid bag, drip chamber, roller clamp, tubing and cannula site, with each part highlighted as the related challenge is shown.">
+            <defs>
+              <linearGradient id="cc-fluid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0593C6" stop-opacity="0.75" />
+                <stop offset="1" stop-color="#09318D" stop-opacity="0.9" />
+              </linearGradient>
+              <radialGradient id="cc-halo">
+                <stop offset="0" stop-color="#0593C6" stop-opacity="0.55" />
+                <stop offset="1" stop-color="#0593C6" stop-opacity="0" />
+              </radialGradient>
+              <clipPath id="cc-bag-clip">
+                <rect x="150" y="50" width="100" height="150" rx="22" />
+              </clipPath>
+              <symbol id="cc-mini" viewBox="0 0 80 220">
+                <path d="M40 0 V8" />
+                <rect x="10" y="8" width="60" height="90" rx="14" />
+                <rect x="30" y="104" width="20" height="40" rx="6" />
+                <path d="M40 144 V220" />
+              </symbol>
+            </defs>
+
+            <!-- ambient halo -->
+            <circle class="cc-halo" cx="210" cy="300" r="230" fill="url(#cc-halo)" />
+
+            <!-- 04 · other lines on the ward, outside the field of view -->
+            <g class="cc-ward">
+              <circle class="cc-radar" cx="225" cy="330" r="200" />
+              <use href="#cc-mini" x="14" y="36" width="64" height="176" />
+              <use href="#cc-mini" x="60" y="250" width="52" height="143" />
+              <use href="#cc-mini" x="6" y="430" width="48" height="132" />
+            </g>
+
+            <!-- pole + hanger -->
+            <g class="cc-pole">
+              <path d="M300 14 V630" />
+              <path d="M300 30 H200 V50" />
+              <path d="M262 630 H338" />
+            </g>
+
+            <!-- fluid bag -->
+            <g class="cc-part cc-part-bag">
+              <g clip-path="url(#cc-bag-clip)">
+                <rect class="cc-fluid" x="150" y="92" width="100" height="110" fill="url(#cc-fluid)" />
+              </g>
+              <rect class="cc-outline" x="150" y="50" width="100" height="150" rx="22" />
+              <path class="cc-ticks" d="M162 80 h10 M162 100 h6 M162 120 h10 M162 140 h6 M162 160 h10 M162 180 h6" />
+              <rect class="cc-outline" x="192" y="200" width="16" height="20" rx="3" />
+            </g>
+
+            <!-- 02 · drip chamber (drop factor) -->
+            <g class="cc-part cc-part-chamber">
+              <rect class="cc-outline" x="182" y="222" width="36" height="74" rx="11" />
+              <rect class="cc-chamber-fluid" x="184" y="272" width="32" height="22" rx="8" />
+              <circle class="cc-drop" cx="200" cy="236" r="3.6" />
+              <circle class="cc-drop cc-drop-b" cx="200" cy="236" r="3.6" />
+              <path class="cc-drop-ticks" d="M226 232 h8 M226 246 h8 M226 260 h8" />
+            </g>
+
+            <!-- 01 / 05 · PVC tubing -->
+            <g class="cc-part cc-part-tube">
+              <path class="cc-tube" pathLength="1"
+                    d="M200 296 V352 M200 398 C200 470 120 470 128 530 C134 584 232 602 296 574" />
+              <path class="cc-flow"
+                    d="M200 296 V352 M200 398 C200 470 120 470 128 530 C134 584 232 602 296 574" />
+            </g>
+
+            <!-- 01 · roller clamp -->
+            <g class="cc-part cc-part-clamp">
+              <rect class="cc-outline" x="184" y="352" width="32" height="46" rx="7" />
+              <g class="cc-wheel">
+                <circle class="cc-outline" cx="200" cy="372" r="9" />
+                <path class="cc-outline" d="M200 363 V381 M191 372 H209" />
+              </g>
+            </g>
+
+            <!-- 05 · cannula site -->
+            <g class="cc-part cc-part-site">
+              <path class="cc-arm" d="M262 596 L404 556" />
+              <circle class="cc-site-pulse" cx="304" cy="574" r="16" />
+              <rect class="cc-outline cc-cannula" x="290" y="566" width="22" height="10" rx="3" transform="rotate(-16 301 571)" />
+            </g>
+
+            <!-- 03 · bedside log -->
+            <g class="cc-part cc-part-log">
+              <rect class="cc-outline" x="316" y="246" width="66" height="88" rx="6" />
+              <rect class="cc-outline" x="336" y="240" width="26" height="12" rx="3" />
+              <path class="cc-log-line" style="--d:0" d="M328 270 h42" />
+              <path class="cc-log-line" style="--d:1" d="M328 284 h34" />
+              <path class="cc-log-line" style="--d:2" d="M328 298 h42" />
+              <path class="cc-log-line" style="--d:3" d="M328 312 h26" />
+            </g>
+
+            <!-- 06 · conventional pump + proprietary disposable (ghosted) -->
+            <g class="cc-part cc-part-pump">
+              <rect class="cc-ghost" x="314" y="370" width="84" height="76" rx="10" />
+              <rect class="cc-ghost" x="326" y="382" width="40" height="22" rx="3" />
+              <path class="cc-ghost" d="M326 420 h14 M348 420 h14 M326 432 h14 M348 432 h14" />
+              <rect class="cc-ghost" x="374" y="384" width="14" height="50" rx="4" />
+            </g>
+          </svg>
+
+          <!-- Hotspots: each one opens the matching challenge -->
+          <button class="cc-hot" type="button" data-cc-go="1" style="--x:47.6%;--y:58.1%"
+                  aria-label="Challenge 01: Unstable Flow Rates">
+            <span class="cc-hot-dot"></span><span class="cc-hot-label">Roller clamp · PVC tubing</span>
+          </button>
+          <button class="cc-hot" type="button" data-cc-go="2" style="--x:47.6%;--y:40.3%"
+                  aria-label="Challenge 02: Manual Calculation Errors">
+            <span class="cc-hot-dot"></span><span class="cc-hot-label">Drip chamber · drop factor</span>
+          </button>
+          <button class="cc-hot cc-hot-left" type="button" data-cc-go="3" style="--x:83.3%;--y:45%"
+                  aria-label="Challenge 03: Administrative Overload">
+            <span class="cc-hot-dot"></span><span class="cc-hot-label">Verification &amp; logging</span>
+          </button>
+          <button class="cc-hot" type="button" data-cc-go="4" style="--x:10.9%;--y:14%"
+                  aria-label="Challenge 04: Limited Ward-Wide Visibility">
+            <span class="cc-hot-dot"></span><span class="cc-hot-label">Other beds on the ward</span>
+          </button>
+          <button class="cc-hot cc-hot-left" type="button" data-cc-go="5" style="--x:72.4%;--y:89.7%"
+                  aria-label="Challenge 05: Delayed Complication Detection">
+            <span class="cc-hot-dot"></span><span class="cc-hot-label">Cannula site</span>
+          </button>
+          <button class="cc-hot cc-hot-left" type="button" data-cc-go="6" style="--x:84.8%;--y:63.8%"
+                  aria-label="Challenge 06: The Cost of Smart Healthcare">
+            <span class="cc-hot-dot"></span><span class="cc-hot-label">Pumps &amp; disposables</span>
+          </button>
+        </div>
+
+        <nav class="cc-rail" aria-label="Clinical challenges">
+          <button type="button" data-cc-go="1" aria-label="01 Unstable Flow Rates">01</button>
+          <button type="button" data-cc-go="2" aria-label="02 Manual Calculation Errors">02</button>
+          <button type="button" data-cc-go="3" aria-label="03 Administrative Overload">03</button>
+          <button type="button" data-cc-go="4" aria-label="04 Limited Ward-Wide Visibility">04</button>
+          <button type="button" data-cc-go="5" aria-label="05 Delayed Complication Detection">05</button>
+          <button type="button" data-cc-go="6" aria-label="06 The Cost of Smart Healthcare">06</button>
+        </nav>
+      </div>
+
+      <!-- The six challenges (original content) -->
+      <ol class="cc-steps">
+        <li class="cc-step" id="cc-step-1" data-step="1" tabindex="-1">
+          <span class="cc-step-num" aria-hidden="true">01</span>
+          <h3>Unstable Flow Rates</h3>
+          <p class="cc-step-tagline">Precision fades over time.</p>
+          <p class="cc-step-detail">PVC tubing deformation and roller clamp drift.</p>
+        </li>
+
+        <li class="cc-step" id="cc-step-2" data-step="2" tabindex="-1">
+          <span class="cc-step-num" aria-hidden="true">02</span>
+          <h3>Manual Calculation Errors</h3>
+          <p class="cc-step-tagline">Every drop counts.</p>
+          <p class="cc-step-detail">Drop-factor conversion errors compound quickly.</p>
+        </li>
+
+        <li class="cc-step" id="cc-step-3" data-step="3" tabindex="-1">
+          <span class="cc-step-num" aria-hidden="true">03</span>
+          <h3>Administrative Overload</h3>
+          <p class="cc-step-tagline">Less paperwork. More patient care.</p>
+          <p class="cc-step-detail">Time spent verifying prescriptions and logging.</p>
+        </li>
+
+        <li class="cc-step" id="cc-step-4" data-step="4" tabindex="-1">
+          <span class="cc-step-num" aria-hidden="true">04</span>
+          <h3>Limited Ward-Wide Visibility</h3>
+          <p class="cc-step-tagline">You cannot monitor what you cannot see.</p>
+          <p class="cc-step-detail">No centralized multi-bed monitoring.</p>
+        </li>
+
+        <li class="cc-step" id="cc-step-5" data-step="5" tabindex="-1">
+          <span class="cc-step-num" aria-hidden="true">05</span>
+          <h3>Delayed Complication Detection</h3>
+          <p class="cc-step-tagline">A small leak can become serious.</p>
+          <p class="cc-step-detail">Infiltration and extravasation go unnoticed.</p>
+        </li>
+
+        <li class="cc-step" id="cc-step-6" data-step="6" tabindex="-1">
+          <span class="cc-step-num" aria-hidden="true">06</span>
+          <h3>The Cost of Smart Healthcare</h3>
+          <p class="cc-step-tagline">Advanced care shouldn't be out of reach.</p>
+          <p class="cc-step-detail">Expensive pumps and proprietary disposables.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="innovation" id="features">
+    <div class="feature-intro section-shell">
+      <div class="eyebrow">
+        Core innovations
+      </div>
+      <h2>One system. <em>Every signal.</em></h2>
+    </div>
+
+    <div class="feature-story" id="design">
+      <div class="feature-stage">
+        <article class="feature-page feature-page-blue is-active">
+          <div class="feature-page-inner">
+            <span class="feature-index">01</span>
+            <h3>Automated Flow Control</h3>
+
+            <div class="feature-image feature-device-image">
+              <img
+                      src="images/VITAL_Medical_Sensor_System2.png"
+                      alt="VitalCheer flow control sensor"
+                      onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+              />
+              <span class="image-placeholder">
+                    Image slot · VITAL Medical Sensor System2.png
+                  </span>
+            </div>
+
+            <p>
+              Continuous infrared sensing and micro-calibrated motor
+              adjustments keep every gravity line precise without
+              interrupting care.
+            </p>
+          </div>
+        </article>
+
+        <article class="feature-page feature-page-white">
+          <div class="feature-page-inner">
+            <span class="feature-index">02</span>
+            <h3>Multi-Device Central Dashboard</h3>
+
+            <div class="feature-image">
+              <img
+                      src="images/multi-device-central-dashboard.png"
+                      alt="Multi-device central dashboard"
+                      onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+              />
+              <span class="image-placeholder">
+                    Image slot · multi-device-central-dashboard.png
+                  </span>
+            </div>
+
+            <p>
+              One calm ward view keeps every bedside, line status, and
+              alert visible to the team at once.
+            </p>
+          </div>
+        </article>
+
+        <article class="feature-page feature-page-pale">
+          <div class="feature-page-inner">
+            <span class="feature-index">03</span>
+            <h3>Early Infiltration Detection</h3>
+
+            <div class="feature-image">
+              <img
+                      src="images/early-infiltration-detection.png"
+                      alt="Early infiltration detection sensor"
+                      onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+              />
+              <span class="image-placeholder">
+                    Image slot · early-infiltration-detection.png
+                  </span>
+            </div>
+
+            <p>
+              Pressure wave stabilization catches subtle changes before
+              micro-extravasation becomes a serious complication.
+            </p>
+          </div>
+        </article>
+
+        <article class="feature-page feature-page-sage">
+          <div class="feature-page-inner">
+            <span class="feature-index">04</span>
+            <h3>Precision Dose Calculator</h3>
+
+            <div class="feature-image">
+              <img
+                      src="images/precision-dose-calculator.png"
+                      alt="Precision dose calculator"
+                      onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+              />
+              <span class="image-placeholder">
+                    Image slot · precision-dose-calculator.png
+                  </span>
+            </div>
+
+            <p>
+              Translate prescription volume and target duration into an
+              exact, actionable flow rate in seconds.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="feature-story-progress" aria-hidden="true">
+        <span class="is-active"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="secondary-features section-shell" id="utilities">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">
+          Essential utilities
+        </div>
+        <h2>Quiet tools for <em>better care.</em></h2>
+      </div>
+      <p>Everyday clinical support, made visible and easy to act on.</p>
+    </div>
+
+    <ul class="utilities">
+      <!-- Utility 01 (template): edit the title/text, drop the image in images/, and write the longer description -->
+      <li class="utility is-active">
+        <button class="utility-trigger" type="button" aria-expanded="true" aria-controls="utility-01">
+          <span class="utility-num">01</span>
+          <svg class="utility-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg>
+          <span class="utility-spine" aria-hidden="true">Continuous Data Recording</span>
+        </button>
+        <div class="utility-content" id="utility-01">
+          <h3>Continuous Data Recording</h3>
+          <p class="utility-text">Automated event logging exported straight to EHR systems.</p>
+          <div class="utility-reveal">
+            <div class="utility-media">
+              <img src="images/continuous-data-recording.png" alt="" loading="lazy" onerror="this.remove()" />
+              <span>Image · images/continuous-data-recording.png</span>
+            </div>
+            <p class="utility-desc">Add a longer description of Continuous Data Recording here: how it works on the ward, who it helps, and what makes it different.</p>
+          </div>
+        </div>
+      </li>
+      <!-- Utility 02 (template): edit the title/text, drop the image in images/, and write the longer description -->
+      <li class="utility">
+        <button class="utility-trigger" type="button" aria-expanded="false" aria-controls="utility-02">
+          <span class="utility-num">02</span>
+          <svg class="utility-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2.5"/><path d="M21 10.5v3M7 10v4M10.5 10v4"/></svg>
+          <span class="utility-spine" aria-hidden="true">Battery &amp; Low Liquid Alerts</span>
+        </button>
+        <div class="utility-content" id="utility-02">
+          <h3>Battery &amp; Low Liquid Alerts</h3>
+          <p class="utility-text">Dual-stage audio-visual depletion alerts keep teams ahead.</p>
+          <div class="utility-reveal">
+            <div class="utility-media">
+              <img src="images/battery-low-liquid-alerts.png" alt="" loading="lazy" onerror="this.remove()" />
+              <span>Image · images/battery-low-liquid-alerts.png</span>
+            </div>
+            <p class="utility-desc">Add a longer description of Battery &amp; Low Liquid Alerts here: how it works on the ward, who it helps, and what makes it different.</p>
+          </div>
+        </div>
+      </li>
+      <!-- Utility 03 (template): edit the title/text, drop the image in images/, and write the longer description -->
+      <li class="utility">
+        <button class="utility-trigger" type="button" aria-expanded="false" aria-controls="utility-03">
+          <span class="utility-num">03</span>
+          <svg class="utility-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 18.5h3"/><path d="M19.5 7.5a6 6 0 0 1 0 6M21.8 5.5a9 9 0 0 1 0 10"/></svg>
+          <span class="utility-spine" aria-hidden="true">Mobile Alerting Plus</span>
+        </button>
+        <div class="utility-content" id="utility-03">
+          <h3>Mobile Alerting Plus</h3>
+          <p class="utility-text">Real-time push notifications sent to nurse pagers and smart devices.</p>
+          <div class="utility-reveal">
+            <div class="utility-media">
+              <img src="images/mobile-alerting-plus.png" alt="" loading="lazy" onerror="this.remove()" />
+              <span>Image · images/mobile-alerting-plus.png</span>
+            </div>
+            <p class="utility-desc">Add a longer description of Mobile Alerting Plus here: how it works on the ward, who it helps, and what makes it different.</p>
+          </div>
+        </div>
+      </li>
+      <!-- Utility 04 (template): edit the title/text, drop the image in images/, and write the longer description -->
+      <li class="utility">
+        <button class="utility-trigger" type="button" aria-expanded="false" aria-controls="utility-04">
+          <span class="utility-num">04</span>
+          <svg class="utility-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 6.5h7M9 11h.01M12 11h.01M15 11h.01M9 14.5h.01M12 14.5h.01M15 14.5h.01M9 18h.01M12 18h3"/></svg>
+          <span class="utility-spine" aria-hidden="true">Precision Dose Calculator</span>
+        </button>
+        <div class="utility-content" id="utility-04">
+          <h3>Precision Dose Calculator</h3>
+          <p class="utility-text">Zero-error conversions from prescription to patient-ready flow rate.</p>
+          <div class="utility-reveal">
+            <div class="utility-media">
+              <img src="images/precision-dose-calculator.png" alt="" loading="lazy" onerror="this.remove()" />
+              <span>Image · images/precision-dose-calculator.png</span>
+            </div>
+            <p class="utility-desc">Add a longer description of Precision Dose Calculator here: how it works on the ward, who it helps, and what makes it different.</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <p class="utilities-hint">04 everyday tools · hover a card to read more</p>
+  </section>
+
+  <section class="workflow section-shell" id="how-it-works">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">
+          How it works
+        </div>
+        <h2>From setup to certainty.</h2>
+      </div>
+      <p>A simple clinical workflow, with intelligence where it matters.</p>
+    </div>
+
+    <div class="workflow-grid">
+      <article class="workflow-card">
+        <div class="workflow-image">
+          <img
+                  src="images/attaching-device.png"
+                  alt="Attaching the VitalCheer device"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+          />
+          <span>Image slot · attaching-device.png</span>
+        </div>
+
+        <div class="workflow-content">
+          <span class="step-count">01</span>
+          <h3>Attaching the Device</h3>
+          <strong>Secure external mounting</strong>
+          <p>Compact clip-on mechanism mounts outside the standard drip chamber.</p>
+        </div>
+      </article>
+
+      <article class="workflow-card">
+        <div class="workflow-image">
+          <img
+                  src="images/connecting-to-phone.png"
+                  alt="Connecting VitalCheer to a phone"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+          />
+          <span>Image slot · connecting-to-phone.png</span>
+        </div>
+
+        <div class="workflow-content">
+          <span class="step-count">02</span>
+          <h3>Connecting to the Phone</h3>
+          <strong>Instant mobile pairing</strong>
+          <p>Seamless wireless Bluetooth synchronization with the clinical app.</p>
+        </div>
+      </article>
+
+      <article class="workflow-card">
+        <div class="workflow-image">
+          <img
+                  src="images/setting-up-details.png"
+                  alt="Setting up VitalCheer infusion details"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+          />
+          <span>Image slot · setting-up-details.png</span>
+        </div>
+
+        <div class="workflow-content">
+          <span class="step-count">03</span>
+          <h3>Setting Up Details</h3>
+          <strong>Parameter configuration</strong>
+          <p>Input fluid volume and target duration for automated rate mapping.</p>
+        </div>
+      </article>
+
+      <article class="workflow-card">
+        <div class="workflow-image">
+          <img
+                  src="images/real-time-monitoring.png"
+                  alt="Real-time VitalCheer monitoring"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+          />
+          <span>Image slot · real-time-monitoring.png</span>
+        </div>
+
+        <div class="workflow-content">
+          <span class="step-count">04</span>
+          <h3>Monitor</h3>
+          <strong>Real-time tracking</strong>
+          <p>Closed-loop flow control, wave telemetry, and instant alerts.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="contact section-shell" id="contact">
+    <div class="contact-copy">
+      <div class="eyebrow">
+        Start a conversation
+      </div>
+
+      <h2>Bring precision to your <em>hospital ward.</em></h2>
+
+      <p>
+        Get in touch with our clinical engineering team for pilot programs,
+        technical specs, or hardware demonstrations.
+      </p>
+
+      <div class="contact-actions">
+        <button class="button button-accent" type="button" data-open-contact>
+          Talk to the team <span>↗</span>
+        </button>
+      </div>
+    </div>
+
+    <aside class="contact-monitor" aria-label="Contact details">
+      <div class="monitor-top">
+        <span class="monitor-status"><i></i> Online</span>
+        <span>VC / 001</span>
+      </div>
+
+      <svg class="monitor-ecg" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
+        <path class="monitor-ecg-grid" d="M0 45H400" />
+        <path class="monitor-ecg-line" d="M0 45h70l8-6 6 6h14l6-30 8 58 7-38 5 10h40l9-8 9 8h68l8-6 6 6h14l6-30 8 58 7-38 5 10h40l9-8 9 8h28" />
+      </svg>
+
+      <dl class="monitor-rows">
+        <div>
+          <dt>Email</dt>
+          <dd><a href="mailto:vitalcheergroup@gmail.com">vitalcheergroup@gmail.com</a></dd>
+        </div>
+        <div>
+          <dt>Based in</dt>
+          <dd>Colombo, Sri Lanka</dd>
+        </div>
+        <div>
+          <dt>Colombo time</dt>
+          <dd><time class="monitor-clock" data-tz="Asia/Colombo">--:--</time></dd>
+        </div>
+      </dl>
+    </aside>
+  </section>
+
+  <!-- Contact form (opens from "Talk to the team") -->
+  <dialog class="contact-dialog" aria-labelledby="contact-dialog-title">
+    <!-- Inquiries are delivered to vitalcheergroup@gmail.com via FormSubmit (formsubmit.co).
+         The first submission sends an activation email to that inbox: click "Activate" once. -->
+    <form class="contact-form" id="contact-form" action="https://formsubmit.co/vitalcheergroup@gmail.com" method="POST">
+      <button class="dialog-close" type="button" aria-label="Close" data-close-contact>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+      <h3 id="contact-dialog-title">Talk to the team</h3>
+
+      <input type="hidden" name="_subject" value="New VitalCheer inquiry" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <label>
+        Full name
+        <input type="text" name="name" placeholder="Your name" required />
+      </label>
+
+      <label>
+        Professional email
+        <input type="email" name="email" placeholder="name@institution.org" required />
+      </label>
+
+      <label>
+        Message / additional info
+        <textarea name="message" rows="4" placeholder="Tell us what you are exploring..." required></textarea>
+      </label>
+
+      <button class="button button-accent" type="submit">
+        Send inquiry <span>↗</span>
+      </button>
+
+      <p class="form-status" role="status"></p>
+    </form>
+  </dialog>
+  <!-- ============ About us: team (template) ============
+       Five team cards. For each person, edit the name, role and links,
+       and add a portrait photo at images/team/member-1.jpg ... member-5.jpg.
+       Until a photo exists, a neutral VC monogram is shown. -->
+  <section class="about section-shell" id="about" aria-labelledby="about-title">
+    <div class="about-head">
+      <div>
+        <div class="eyebrow">
+          About us
+        </div>
+        <h2 id="about-title">The people building <em>VitalCheer.</em></h2>
+      </div>
+      <p>
+        A team of five building VitalCheer through the Agile Team Project,
+        Informatics Institute of Technology / University of Westminster.
+      </p>
+    </div>
+
+    <ul class="team">
+      <!-- Team member 1: edit name, role and links; add a portrait at images/team/member-1.jpg (4:5 works best) -->
+      <li class="member">
+        <figure class="member-photo">
+          <img src="images/team/member-1.jpg" alt="Portrait of team member 1" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">VC</span>
+        </figure>
+        <div class="member-body">
+          <span class="member-index">01</span>
+          <h3 class="member-name">Team member 1</h3>
+          <p class="member-role">Role / responsibility</p>
+          <ul class="member-links">
+            <li><a href="#" aria-label="LinkedIn profile of team member 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="#" aria-label="GitHub profile of team member 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+          </ul>
+        </div>
+      </li>
+      <!-- Team member 2: edit name, role and links; add a portrait at images/team/member-2.jpg (4:5 works best) -->
+      <li class="member">
+        <figure class="member-photo">
+          <img src="images/team/member-2.jpg" alt="Portrait of team member 2" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">VC</span>
+        </figure>
+        <div class="member-body">
+          <span class="member-index">02</span>
+          <h3 class="member-name">Team member 2</h3>
+          <p class="member-role">Role / responsibility</p>
+          <ul class="member-links">
+            <li><a href="#" aria-label="LinkedIn profile of team member 2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="#" aria-label="GitHub profile of team member 2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 2"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+          </ul>
+        </div>
+      </li>
+      <!-- Team member 3: edit name, role and links; add a portrait at images/team/member-3.jpg (4:5 works best) -->
+      <li class="member">
+        <figure class="member-photo">
+          <img src="images/team/member-3.jpg" alt="Portrait of team member 3" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">VC</span>
+        </figure>
+        <div class="member-body">
+          <span class="member-index">03</span>
+          <h3 class="member-name">Team member 3</h3>
+          <p class="member-role">Role / responsibility</p>
+          <ul class="member-links">
+            <li><a href="#" aria-label="LinkedIn profile of team member 3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="#" aria-label="GitHub profile of team member 3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+          </ul>
+        </div>
+      </li>
+      <!-- Team member 4: edit name, role and links; add a portrait at images/team/member-4.jpg (4:5 works best) -->
+      <li class="member">
+        <figure class="member-photo">
+          <img src="images/team/member-4.jpg" alt="Portrait of team member 4" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">VC</span>
+        </figure>
+        <div class="member-body">
+          <span class="member-index">04</span>
+          <h3 class="member-name">Team member 4</h3>
+          <p class="member-role">Role / responsibility</p>
+          <ul class="member-links">
+            <li><a href="#" aria-label="LinkedIn profile of team member 4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="#" aria-label="GitHub profile of team member 4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 4"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+          </ul>
+        </div>
+      </li>
+      <!-- Team member 5: edit name, role and links; add a portrait at images/team/member-5.jpg (4:5 works best) -->
+      <li class="member">
+        <figure class="member-photo">
+          <img src="images/team/member-5.jpg" alt="Portrait of team member 5" loading="lazy" onerror="this.remove()" />
+          <span class="member-monogram" aria-hidden="true">VC</span>
+        </figure>
+        <div class="member-body">
+          <span class="member-index">05</span>
+          <h3 class="member-name">Team member 5</h3>
+          <p class="member-role">Role / responsibility</p>
+          <ul class="member-links">
+            <li><a href="#" aria-label="LinkedIn profile of team member 5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9.5v8M6.5 6.2v.1M10.5 17.5v-8m0 3.5c0-2 1.3-3.6 3.2-3.6 1.8 0 2.8 1.2 2.8 3.4v4.7"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></a></li>
+            <li><a href="#" aria-label="GitHub profile of team member 5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li>
+            <li><a href="mailto:vitalcheergroup@gmail.com" aria-label="Email team member 5"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer" id="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="brand" href="#top">
+        <img class="brand-logo" src="images/logo.png" alt="" width="40" height="35" />
+        <span>VitalCheer</span>
+      </a>
+      <p>Intelligent infusion control for every gravity line.</p>
+      <a class="footer-email" href="mailto:vitalcheergroup@gmail.com">vitalcheergroup@gmail.com</a>
+      <!-- Social links (template): replace each href with your profile URL -->
+      <ul class="footer-social">
+          <li><a href="#" aria-label="VitalCheer on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li>
+          <li><a href="#" aria-label="VitalCheer on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5h2.5V5H14c-2.2 0-3.5 1.4-3.5 3.6V11H8v3.5h2.5V21H14v-6.5h2.4L17 11h-3V9.2c0-.5.3-.7.7-.7Z"/></svg></a></li>
+          <li><a href="#" aria-label="VitalCheer on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 10v6.5M7.5 7.3v.1M11 16.5V10m0 3c0-1.8 1.1-3.1 2.8-3.1 1.6 0 2.5 1 2.5 3v3.6"/></svg></a></li>
+      </ul>
+    </div>
+
+    <nav class="footer-cols" aria-label="Footer">
+      <div>
+        <span class="footer-label">Explore</span>
+        <a href="#overview">Overview</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+            <a href="#about">About Us</a>
+      </div>
+      <div>
+        <span class="footer-label">For hospitals</span>
+        <a href="#contact">Partner with us</a>
+      </div>
+      <div>
+        <span class="footer-label">Company</span>
+        <a href="#about">Our team</a>
+        <a href="terms.html">Terms of use</a>
+        <a href="privacy.html">Privacy policy</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Signature: wordmark with a live infusion/heartbeat trace -->
+  <div class="footer-signature" aria-hidden="true">
+    <svg viewBox="0 0 1200 250" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="sig-fill" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#09318D" />
+          <stop offset="0.55" stop-color="#0593C6" />
+          <stop offset="1" stop-color="#D83995" />
+        </linearGradient>
+        <radialGradient id="sig-spot">
+          <stop offset="0" stop-color="#fff" />
+          <stop offset="1" stop-color="#fff" stop-opacity="0" />
+        </radialGradient>
+        <mask id="sig-mask">
+          <rect width="1200" height="250" fill="#000" />
+          <circle class="sig-spot" cx="600" cy="140" r="260" fill="url(#sig-spot)" />
+        </mask>
+      </defs>
+      <text class="sig-outline" x="600" y="205" text-anchor="middle" textLength="1170" lengthAdjust="spacingAndGlyphs">VitalCheer</text>
+      <text class="sig-fill" x="600" y="205" text-anchor="middle" textLength="1170" lengthAdjust="spacingAndGlyphs" mask="url(#sig-mask)">VitalCheer</text>
+      <path class="sig-trace" d="M0 132H300l12-10 10 10h24l10-52 14 104 12-74 9 22H560l14-14 14 14H780l12-10 10 10h24l10-52 14 104 12-74 9 22H1200" />
+    </svg>
+  </div>
+
+  <div class="footer-end">
+    <span>© 2025 VitalCheer</span>
+    <span>Engineered for safety · Designed for precision</span>
+    <span>VC / 001</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="script.js?v=16"></script>
+<script type="module" src="js/scenes3d.js?v=16"></script>
+</body>
+</html>
