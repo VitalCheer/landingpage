@@ -197,6 +197,22 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     });
 });
 
+// Footer "Back to top": glides up (through the feature story without snapping)
+document.querySelectorAll("[data-scroll-top]").forEach((button) => {
+    button.addEventListener("click", () => {
+        measureFeatureStory();
+        if (featureStory) setFeature(0, true);
+        navScrolling = true;
+        navTarget = 0;
+        featureLock = false;
+        armNavTimer(4000);
+        smoothScrollTo(0, { duration: 1.6, onComplete: finishNavScroll });
+        history.replaceState(null, "", location.pathname + location.search);
+        // keep keyboard users at the top of the page too
+        document.querySelector(".site-header .brand")?.focus({ preventScroll: true });
+    });
+});
+
 window.addEventListener("scroll", updateFeatureStory, {
     passive: true,
 });

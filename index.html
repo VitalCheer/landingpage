@@ -4,12 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="VitalCheer — intelligent infusion control for every gravity line." />
-  <title>VitalCheer</title>
+  <title>VitalCheer · Smart infusion monitoring &amp; controlling system</title>
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <meta name="theme-color" content="#09318D" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="preload" href="models/vitalcheer-device.glb?v=5" as="fetch" type="model/gltf-binary" crossorigin="anonymous" />
-  <link rel="stylesheet" href="styles.css?v=23" />
+  <link rel="stylesheet" href="styles.css?v=27" />
 </head>
 <body>
 <div class="custom-cursor" aria-hidden="true"></div>
@@ -69,11 +74,7 @@
       <li><img src="images/partners/atp.png" alt="Agile Team Project" width="131" height="76" /></li>
       <li><img src="images/partners/park-hospitals.png" alt="Park Hospitals (Private) Limited" width="197" height="193" /></li>
       <li><img src="images/partners/lanka-hospitals.png" alt="Lanka Hospitals" width="184" height="200" /></li>
-      <li class="advisors-slot" aria-hidden="true">
-        <!-- Template slot: replace this <li> with
-             <li><img src="images/partners/your-partner.png" alt="Partner name" /></li> -->
-        <span>Partner logo</span>
-      </li>
+      <li><img src="images/partners/amor-developers.png" alt="Amor Developers Group" width="280" height="160" /></li>
     </ul>
   </section>
 
@@ -215,10 +216,10 @@
             <span class="feature-index">01</span>
             <h3>Automated Flow Control</h3>
 
-            <div class="feature-image feature-device-image">
+            <div class="feature-image">
               <img
-                      src="images/VITAL_Medical_Sensor_System2.png"
-                      alt="VitalCheer flow control sensor"
+                      src="images/features/automated-flow-control.jpg" style="object-position: 62% center"
+                      alt="Nurse with a patient whose IV line is fitted with the VitalCheer device"
                       onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
               />
               <span class="image-placeholder">
@@ -239,8 +240,8 @@
 
             <div class="feature-image">
               <img
-                      src="images/multi-device-central-dashboard.png"
-                      alt="Multi-device central dashboard"
+                      src="images/features/multi-device-central-dashboard.jpg" style="object-position: 45% center"
+                      alt="Nurse viewing the ward infusion dashboard on a desktop screen"
                       onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
               />
               <span class="image-placeholder">
@@ -261,8 +262,8 @@
 
             <div class="feature-image">
               <img
-                      src="images/early-infiltration-detection.png"
-                      alt="Early infiltration detection sensor"
+                      src="images/features/early-infiltration-detection.jpg?v=2" style="object-position: 30% center"
+                      alt="Patient arm with an IV cannula under a clear dressing"
                       onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
               />
               <span class="image-placeholder">
@@ -283,8 +284,8 @@
 
             <div class="feature-image">
               <img
-                      src="images/precision-dose-calculator.png"
-                      alt="Precision dose calculator"
+                      src="images/features/precision-dose-calculator.jpg?v=2" style="object-position: 58% center"
+                      alt="Nurse checking medication details on a phone"
                       onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
               />
               <span class="image-placeholder">
@@ -331,7 +332,7 @@
           <h3>Continuous Data Recording</h3>
           <div class="utility-reveal">
             <div class="utility-media">
-              <img src="images/continuous-data-recording.png" alt="" loading="lazy" onerror="this.remove()" />
+              <img src="images/features/continuous-data-recording.jpg" alt="Nurse entering infusion details on a tablet at the bedside" loading="lazy" onerror="this.remove()" />
               <span>Image · images/continuous-data-recording.png</span>
             </div>
             <p class="utility-desc">Replaces tedious manual record-keeping by automatically capturing every infusion start time, volume change, and operational event in real time. This eliminates human error during data entry, saves valuable nursing time during shift logs, and maintains an accurate, digital timeline of the entire treatment process.</p>
@@ -349,7 +350,7 @@
           <h3>Battery &amp; Low Liquid Alerts</h3>
           <div class="utility-reveal">
             <div class="utility-media">
-              <img src="images/battery-low-liquid-alerts.png" alt="" loading="lazy" onerror="this.remove()" />
+              <img src="images/features/battery-low-liquid-alerts.jpg" alt="Nurse reviewing VitalCheer alerts and a flow-rate warning on a phone" loading="lazy" onerror="this.remove()" />
               <span>Image · images/battery-low-liquid-alerts.png</span>
             </div>
             <p class="utility-desc">Provides instant, automated warnings when device battery levels drop below operational thresholds or when liquid moisture is detected near sensitive electronic components. This ensures preemptive battery replacement before power failure occurs and protects the internal hardware from potential liquid exposure, safeguarding continuous device reliability during patient treatments.</p>
@@ -367,7 +368,7 @@
           <h3>Mobile Alerting Plus</h3>
           <div class="utility-reveal">
             <div class="utility-media">
-              <img src="images/mobile-alerting-plus.png" alt="" loading="lazy" onerror="this.remove()" />
+              <img src="images/features/mobile-alerting-plus.jpg" alt="VitalCheer notifications on a phone lock screen" loading="lazy" onerror="this.remove()" />
               <span>Image · images/mobile-alerting-plus.png</span>
             </div>
             <p class="utility-desc">Pushes clean, immediate push notifications directly to nursing staff mobile devices whenever an anomaly, low battery, or flow interruption occurs. By delivering patient name, bed number, and specific alert details straight to the caregiver's hands, it eliminates the need for stationary monitoring stations and ensures rapid response times from anywhere in the facility.</p>
@@ -393,8 +394,8 @@
       <article class="workflow-card">
         <div class="workflow-image">
           <img
-                  src="images/attaching-device.png"
-                  alt="Attaching the VitalCheer device"
+                  src="images/how-it-works/attaching-device.jpg"
+                  alt="Nurse clipping the VitalCheer sensor onto the drip chamber"
                   onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
           />
           <span>Image slot · attaching-device.png</span>
@@ -411,8 +412,8 @@
       <article class="workflow-card">
         <div class="workflow-image">
           <img
-                  src="images/connecting-to-phone.png"
-                  alt="Connecting VitalCheer to a phone"
+                  src="images/how-it-works/connecting-to-phone.jpg"
+                  alt="VitalCheer device pairing with a phone over Bluetooth"
                   onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
           />
           <span>Image slot · connecting-to-phone.png</span>
@@ -429,8 +430,8 @@
       <article class="workflow-card">
         <div class="workflow-image">
           <img
-                  src="images/setting-up-details.png"
-                  alt="Setting up VitalCheer infusion details"
+                  src="images/how-it-works/setting-up-details.jpg"
+                  alt="Nurse entering fluid volume and duration in the VitalCheer app"
                   onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
           />
           <span>Image slot · setting-up-details.png</span>
@@ -447,8 +448,8 @@
       <article class="workflow-card">
         <div class="workflow-image">
           <img
-                  src="images/real-time-monitoring.png"
-                  alt="Real-time VitalCheer monitoring"
+                  src="images/how-it-works/real-time-monitoring.jpg"
+                  alt="VitalCheer app showing live flow rate, fluid remaining and battery"
                   onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
           />
           <span>Image slot · real-time-monitoring.png</span>
@@ -656,11 +657,11 @@
       </a>
       <p>Intelligent infusion control for every gravity line.</p>
       <a class="footer-email" href="mailto:vitalcheergroup@gmail.com">vitalcheergroup@gmail.com</a>
-      <!-- Social links (template): replace each href with your profile URL -->
+      <!-- Social links -->
       <ul class="footer-social">
-          <li><a href="#" aria-label="VitalCheer on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li>
-          <li><a href="#" aria-label="VitalCheer on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5h2.5V5H14c-2.2 0-3.5 1.4-3.5 3.6V11H8v3.5h2.5V21H14v-6.5h2.4L17 11h-3V9.2c0-.5.3-.7.7-.7Z"/></svg></a></li>
-          <li><a href="#" aria-label="VitalCheer on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 10v6.5M7.5 7.3v.1M11 16.5V10m0 3c0-1.8 1.1-3.1 2.8-3.1 1.6 0 2.5 1 2.5 3v3.6"/></svg></a></li>
+          <li><a href="https://www.instagram.com/vitalcheer/" target="_blank" rel="noopener" aria-label="VitalCheer on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li>
+          <li><a href="https://www.facebook.com/profile.php?id=61596371884901" target="_blank" rel="noopener" aria-label="VitalCheer on Facebook (opens in a new tab)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5h2.5V5H14c-2.2 0-3.5 1.4-3.5 3.6V11H8v3.5h2.5V21H14v-6.5h2.4L17 11h-3V9.2c0-.5.3-.7.7-.7Z"/></svg></a></li>
+          <li><a href="https://www.linkedin.com/company/vitalcheer/" target="_blank" rel="noopener" aria-label="VitalCheer on LinkedIn (opens in a new tab)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 10v6.5M7.5 7.3v.1M11 16.5V10m0 3c0-1.8 1.1-3.1 2.8-3.1 1.6 0 2.5 1 2.5 3v3.6"/></svg></a></li>
       </ul>
     </div>
 
@@ -679,8 +680,8 @@
       <div>
         <span class="footer-label">Company</span>
         <a href="#about">Our team</a>
-        <a href="terms.html">Terms of use</a>
-        <a href="privacy.html">Privacy policy</a>
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
       </div>
     </nav>
   </div>
@@ -713,11 +714,15 @@
     <span>© 2025 VitalCheer</span>
     <span>Engineered for safety · Designed for precision</span>
     <span>VC / 001</span>
+    <button class="back-to-top" type="button" data-scroll-top>
+      Back to top
+      <span class="back-to-top-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" /></svg></span>
+    </button>
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="script.js?v=16"></script>
+<script src="script.js?v=19"></script>
 <script src="js/scenes3d.bundle.js?v=18" defer></script>
 </body>
 </html>

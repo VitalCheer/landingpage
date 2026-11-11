@@ -1,0 +1,100 @@
+<!doctype html>
+<!--
+  GENERATED FILE. Do not edit {{SLUG}}.html directly.
+  Edit legal/content/{{SLUG}}.md (wording) or legal/template.html (layout), then run:  npm run build:legal
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} · VitalCheer</title>
+  <meta name="description" content="{{DESCRIPTION}}" />
+  <meta property="og:title" content="{{TITLE}} · VitalCheer" />
+  <meta property="og:description" content="{{DESCRIPTION}}" />
+  <meta property="og:type" content="article" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <meta name="theme-color" content="#09318D" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v={{STYLE_VERSION}}" />
+  <link rel="stylesheet" href="legal/legal.css?v={{LEGAL_VERSION}}" />
+</head>
+<body class="legal-page">
+<a class="skip-link" href="#legal-content">Skip to the document</a>
+
+{{HEADER}}
+
+<main id="top" class="legal">
+  <section class="legal-hero section-shell" aria-labelledby="legal-title">
+    <nav class="legal-switch" aria-label="Legal documents">
+{{SWITCH}}
+    </nav>
+
+    <p class="eyebrow">{{EYEBROW}}</p>
+    <h1 id="legal-title">{{HEADING}} <em>{{HEADING_EM}}</em></h1>
+    <p class="legal-intro">{{INTRO}}</p>
+
+    <dl class="legal-meta">
+      <div><dt>Last updated</dt><dd><time datetime="{{UPDATED_ISO}}">{{UPDATED}}</time></dd></div>
+      <div><dt>Version</dt><dd>{{VERSION}}</dd></div>
+      <div><dt>Applies to</dt><dd>{{APPLIES_TO}}</dd></div>
+    </dl>
+  </section>
+
+  <div class="legal-draft section-shell">
+    <p role="note">
+      <strong>Working draft.</strong>
+      This document is an initial draft for a prototype. It has not yet been reviewed by a qualified
+      lawyer, and text in <mark class="ph">[BRACKETS]</mark> marks information still to be confirmed.
+    </p>
+  </div>
+
+  <section class="legal-cards section-shell" aria-label="At a glance">
+{{CARDS}}
+  </section>
+
+  <div class="legal-body section-shell">
+    <nav class="legal-toc" aria-label="On this page">
+      <details class="legal-toc-panel" open>
+        <summary>
+          <span class="legal-toc-label">On this page</span>
+          <span class="legal-toc-current" aria-hidden="true"></span>
+        </summary>
+        <ol>
+{{TOC}}
+        </ol>
+      </details>
+    </nav>
+
+    <article id="legal-content" class="legal-content" tabindex="-1">
+{{CONTENT}}
+    </article>
+  </div>
+
+  <section class="legal-next section-shell" aria-label="More">
+    <div class="legal-next-card">
+      <p class="eyebrow">Questions about this document?</p>
+      <p class="legal-next-text">Write to us and a member of the team will reply.</p>
+      <a class="button button-dark" href="mailto:vitalcheergroup@gmail.com">vitalcheergroup@gmail.com <span>↗</span></a>
+    </div>
+    <div class="legal-next-links">
+      <a class="legal-next-link" href="{{OTHER_SLUG}}.html">
+        <span class="eyebrow">Also read</span>
+        <span class="legal-next-title">{{OTHER_TITLE}} →</span>
+      </a>
+      <a class="legal-next-link" href="index.html">
+        <span class="eyebrow">VitalCheer</span>
+        <span class="legal-next-title">Back to the website →</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+{{FOOTER}}
+
+<script src="legal/legal.js?v={{LEGAL_VERSION}}" defer></script>
+</body>
+</html>

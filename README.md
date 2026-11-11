@@ -22,3 +22,13 @@ The two 3D scenes (hero device, Clinical Challenge IV set) are built in Blender 
 - `npm run build`: both of the above. Run `npm install` once first.
 
 After editing `js/scenes3d.js`, run `npm run build:3d` (and bump the `?v=` number on the script tag in `index.html`).
+
+## Legal pages
+
+- Public pages: `terms-of-use.html` and `privacy-policy.html` (generated; do not edit directly).
+- Edit the wording in `legal/content/terms-of-use.md` and `legal/content/privacy-policy.md`, the layout in `legal/template.html`, styles in `legal/legal.css`, then run `npm run build:legal`.
+- The legal pages reuse the site header and footer from `index.html` at build time, so re-run `npm run build:legal` after changing either.
+- `[SQUARE BRACKET]` text in the legal content is a placeholder for information still to be confirmed. It is highlighted on the page.
+- `terms.html` and `privacy.html` only redirect to the new pages.
+- Internal drafts (DPA, cookie policy, clinical disclaimer, security, testing agreement, incident response) are in `internal-docs/legal/`. They are **not** for publication; see that folder's README before deploying.
+- All legal text is an initial draft and must be reviewed by a qualified lawyer before publication or commercial use.

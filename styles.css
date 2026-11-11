@@ -3416,3 +3416,99 @@ html.lenis body {
     max-width: none;
     margin: 0;
 }
+
+/* softer, rounded feature photos */
+.feature-image {
+    border-radius: 22px;
+}
+
+.advisors-logos img[src*="amor"] { --logo-h: 70px; }
+
+/* ==========================================================
+   No sideways scrolling, ever.
+   `overflow-x: hidden` still lets the page shift sideways (focus, trackpads,
+   mobile), revealing a pale strip at the right edge. `clip` forbids it and,
+   unlike `hidden`, keeps sticky elements working.
+   ========================================================== */
+html,
+body {
+    overflow-x: clip;
+}
+
+.hero,
+.innovation,
+.secondary-features {
+    overflow-x: clip;
+}
+
+/* footer: back to top */
+.footer-end {
+    align-items: center;
+}
+
+.back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 6px 6px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--navy);
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: none;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.back-to-top-icon {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--navy);
+    transition: background 0.25s, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.back-to-top-icon svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+    border-color: rgba(216, 57, 149, 0.4);
+    box-shadow: 0 10px 24px rgba(9, 49, 141, 0.1);
+}
+
+.back-to-top:hover .back-to-top-icon,
+.back-to-top:focus-visible .back-to-top-icon {
+    background: var(--pink);
+    transform: translateY(-3px);
+}
+
+.back-to-top:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+}
+
+.legal-page .back-to-top {
+    cursor: pointer;
+}
+
+@media (max-width: 850px) {
+    .footer-end {
+        align-items: flex-start;
+    }
+
+    .back-to-top {
+        margin-top: 6px;
+    }
+}
