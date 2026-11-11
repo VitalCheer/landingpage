@@ -1,2 +1,15 @@
+# dependencies
 node_modules/
+
+# OS junk
 .DS_Store
+Thumbs.db
+
+# editor / tool settings (personal, not part of the website)
+.idea/
+.vscode/
+.claude/
+
+# Python cache from the Blender build scripts
+__pycache__/
+*.pyc
