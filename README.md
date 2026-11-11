@@ -31,3 +31,8 @@ After editing `js/scenes3d.js`, run `npm run build:3d` (and bump the `?v=` numbe
 - `[SQUARE BRACKET]` text in the legal content is a placeholder for information still to be confirmed. It is highlighted on the page.
 - Internal drafts (DPA, cookie policy, clinical disclaimer, security, testing agreement, incident response) are in `internal-docs/legal/`. They are **not** for publication; see that folder's README before deploying.
 - All legal text is an initial draft and must be reviewed by a qualified lawyer before publication or commercial use.
+
+## Hosting
+
+To publish on Namecheap (or any Apache/cPanel host), run `npm run build:deploy` and upload the contents of
+`deploy/public_html/` (or the zip `deploy/vitalcheer-public_html.zip`) to `public_html`. Full steps: [DEPLOY.md](DEPLOY.md).

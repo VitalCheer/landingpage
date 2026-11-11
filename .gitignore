@@ -13,3 +13,6 @@ Thumbs.db
 # Python cache from the Blender build scripts
 __pycache__/
 *.pyc
+
+# generated upload package (npm run build:deploy)
+/deploy/

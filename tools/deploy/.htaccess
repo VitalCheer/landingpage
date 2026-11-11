@@ -1,0 +1,42 @@
+# VitalCheer: Apache settings for Namecheap shared hosting (cPanel).
+# Copied into deploy/public_html/ by `npm run build:deploy`.
+
+# Never list folder contents; open index.html by default
+Options -Indexes
+DirectoryIndex index.html
+
+# Correct file types (3D models in particular)
+<IfModule mod_mime.c>
+    AddType model/gltf-binary .glb
+    AddType application/javascript .js
+    AddType image/x-icon .ico
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # --- Force HTTPS ------------------------------------------------------------
+    # Turn this on ONLY after the SSL certificate is active in cPanel
+    # (SSL/TLS Status shows your domain with a green padlock). Remove the "#" from both lines:
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # --- Clean addresses: /terms-of-use and /privacy-policy -----------------------
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^(.+?)/?$ $1.html [L]
+</IfModule>
+
+# Compress text files and 3D models for faster loading
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript text/javascript application/json image/svg+xml model/gltf-binary
+</IfModule>
+
+# Browser caching. Pages always re-check; styles, scripts, images and models are
+# cached for a month (the site adds ?v= numbers to them whenever they change).
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

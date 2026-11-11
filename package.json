@@ -7,7 +7,8 @@
     "build:3d": "esbuild js/scenes3d.js --bundle --minify --format=iife --target=es2019 --legal-comments=none --outfile=js/scenes3d.bundle.js",
     "build:models": "node tools/build-models.mjs",
     "build": "npm run build:models && npm run build:3d && npm run build:legal",
-    "build:legal": "node tools/build-legal.mjs"
+    "build:legal": "node tools/build-legal.mjs",
+    "build:deploy": "python tools/build_deploy.py"
   },
   "devDependencies": {
     "@gltf-transform/core": "4.1.1",
