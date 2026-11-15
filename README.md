@@ -1,38 +1,43 @@
-# VitalCheer landing page
+# VitalCheer: landing page
 
-An original, responsive marketing page for VitalCheer, a smart intravenous infusion monitoring and control system. It uses plain HTML, CSS, and JavaScript so it can be deployed from any static host without a build step.
+The website for **VitalCheer**, a smart IV infusion monitoring and control system, live at **[vitalcheer.com](https://vitalcheer.com)**.
 
-## Run locally
+It's a fast static site (plain HTML, CSS and JavaScript) with two real-time 3D scenes made in Blender and rendered with Three.js. It works on any device and browser and needs no server code, so it runs on any normal web host.
 
-Open `index.html` directly in a browser, or serve the folder with any static server:
+---
 
-```bash
-python3 -m http.server 8080
+## Project structure
+
+```
+index.html               the website
+styles.css               all site styles
+script.js                scrolling, menus, contact form, feature story
+js/scenes3d.js           the 3D scenes (source)
+js/scenes3d.bundle.js    the 3D scenes + Three.js, bundled (the page loads this)
+js/models-data.js        embedded model copy, used only when index.html is opened from disk
+models/*.bin             compressed 3D models (glTF binary, saved as .bin so Cloudflare caches them)
+images/                  photos, logos, team, favicons, social preview image
+legal/                   legal page template, content (.md), styles and script
+terms-of-use.html        generated legal pages (don't edit by hand)
+privacy-policy.html
+robots.txt, sitemap.xml, site.webmanifest   search engine + install metadata
+tools/3d/                Blender scripts that build the 3D models
+tools/build-models.mjs   compresses the Blender exports into models/*.bin
+tools/build-legal.mjs    builds the legal pages
+tools/build_deploy.py    makes the upload package for hosting
+tools/deploy/.htaccess   server settings copied into the upload package
+internal-docs/           internal drafts, never published
+DEPLOY.md                step-by-step hosting guide
 ```
 
-The page includes responsive layout behavior, scroll-triggered reveal motion, animated device graphics, a marquee strip, fluid-drop animation, count-up metrics, and five full-screen feature chapters covering closed-loop flow control, IoT ward monitoring, infiltration prediction, dose safety validation, and infusion profiles.
+---
 
-## 3D models and build
+## Tech stack
 
-The two 3D scenes (hero device, Clinical Challenge IV set) are built in Blender and rendered with Three.js.
+HTML5 · CSS3 · vanilla JavaScript · [Three.js](https://threejs.org) · [Lenis](https://github.com/darkroomengineering/lenis) smooth scrolling · Blender · glTF-Transform · esbuild · FormSubmit (contact form) · Namecheap + Cloudflare
 
-- `tools/3d/build_device.py`, `tools/3d/build_iv.py`: Blender scripts; they export raw models to `tools/3d/out/`.
-- `npm run build:models`: compresses them into `models/*.glb` and writes `js/models-data.js` (used only when `index.html` is opened straight from disk).
-- `npm run build:3d`: bundles `js/scenes3d.js` + Three.js into `js/scenes3d.bundle.js`, the file the page loads.
-- `npm run build`: both of the above. Run `npm install` once first.
+**Contact:** [vitalcheergroup@gmail.com](mailto:vitalcheergroup@gmail.com) · Colombo, Sri Lanka
 
-After editing `js/scenes3d.js`, run `npm run build:3d` (and bump the `?v=` number on the script tag in `index.html`).
+---
 
-## Legal pages
-
-- Public pages: `terms-of-use.html` and `privacy-policy.html` (generated; do not edit directly).
-- Edit the wording in `legal/content/terms-of-use.md` and `legal/content/privacy-policy.md`, the layout in `legal/template.html`, styles in `legal/legal.css`, then run `npm run build:legal`.
-- The legal pages reuse the site header and footer from `index.html` at build time, so re-run `npm run build:legal` after changing either.
-- `[SQUARE BRACKET]` text in the legal content is a placeholder for information still to be confirmed. It is highlighted on the page.
-- Internal drafts (DPA, cookie policy, clinical disclaimer, security, testing agreement, incident response) are in `internal-docs/legal/`. They are **not** for publication; see that folder's README before deploying.
-- All legal text is an initial draft and must be reviewed by a qualified lawyer before publication or commercial use.
-
-## Hosting
-
-To publish on Namecheap (or any Apache/cPanel host), run `npm run build:deploy` and upload the contents of
-`deploy/public_html/` (or the zip `deploy/vitalcheer-public_html.zip`) to `public_html`. Full steps: [DEPLOY.md](DEPLOY.md).
+© VitalCheer. All rights reserved.
