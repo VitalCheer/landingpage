@@ -8,6 +8,9 @@ DirectoryIndex index.html
 # Correct file types (3D models in particular)
 <IfModule mod_mime.c>
     AddType model/gltf-binary .glb
+    AddType application/octet-stream .bin
+    AddType application/manifest+json .webmanifest
+    AddType application/xml .xml
     AddType application/javascript .js
     AddType image/x-icon .ico
 </IfModule>

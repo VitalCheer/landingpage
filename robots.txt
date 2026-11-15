@@ -1,0 +1,5 @@
+# VitalCheer: all search engines are welcome.
+User-agent: *
+Allow: /
+
+Sitemap: https://vitalcheer.com/sitemap.xml

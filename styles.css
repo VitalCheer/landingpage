@@ -62,9 +62,8 @@ body::before {
             transparent 52%,
             rgba(5, 147, 198, 0.08)
     );
-    filter: blur(42px);
+    /* no blur filter: a full-screen blur is repainted while scrolling (the gradients are already soft) */
     animation: none;
-    will-change: auto;
 }
 
 .page-noise {
@@ -2184,6 +2183,21 @@ textarea {
 
 
 /* ---- Clinical challenge: real-time 3D IV set (js/scenes3d.js) ---- */
+/* A fixed grid cell, so the 3D view is always exactly the stage size. (Chrome otherwise
+   sizes the row from the canvas and, on 125 % / 150 % display scaling, the canvas
+   keeps growing off-screen: an empty, laggy section.) */
+.cc.has-3d .cc-stage {
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+}
+
+.cc-visual > .scene3d-canvas,
+.device-3d > .scene3d-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .cc.has-3d .cc-visual {
     aspect-ratio: auto;
     width: 100%;
@@ -3432,6 +3446,7 @@ html.lenis body {
    ========================================================== */
 html,
 body {
+    overflow-x: hidden; /* fallback for older browsers */
     overflow-x: clip;
 }
 
@@ -3511,4 +3526,67 @@ body {
     .back-to-top {
         margin-top: 6px;
     }
+}
+
+/* 3D loading indicator (shown while a model downloads) */
+.scene3d-loader {
+    --p: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 4;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    pointer-events: none;
+    font-family: var(--label);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: opacity 0.4s;
+}
+
+.scene3d-loader.is-done {
+    opacity: 0;
+}
+
+.scene3d-loader-ring {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background:
+        radial-gradient(closest-side, var(--canvas) 78%, transparent 80%),
+        conic-gradient(var(--blue) calc(var(--p) * 1%), rgba(5, 147, 198, 0.15) 0);
+    animation: scene3d-spin 1.4s linear infinite;
+}
+
+.cc .scene3d-loader {
+    color: rgba(205, 235, 246, 0.75);
+}
+
+.cc .scene3d-loader-ring {
+    background:
+        radial-gradient(closest-side, #0a2a72 78%, transparent 80%),
+        conic-gradient(var(--sky-mist) calc(var(--p) * 1%), rgba(205, 235, 246, 0.15) 0);
+}
+
+@keyframes scene3d-spin {
+    to { rotate: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scene3d-loader-ring { animation: none; }
+}
+
+.scene3d-loader.is-failed .scene3d-loader-ring {
+    animation: none;
+    background: radial-gradient(closest-side, transparent 70%, rgba(216, 57, 149, 0.6) 72%, transparent 76%);
+}
+
+/* if the browser drops the 3D, hide the floating labels instead of showing them over nothing */
+.cc.is-3d-lost .cc-hot {
+    display: none;
 }

@@ -18,7 +18,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const loader = new GLTFLoader();
 loader.setMeshoptDecoder(MeshoptDecoder);
 
-const MODEL_VERSION = "5";
+const MODEL_VERSION = "7";
 const fromDisk = location.protocol === "file:";
 let embeddedModels = null;
 
@@ -37,21 +37,73 @@ function loadEmbeddedModels() {
     return embeddedModels;
 }
 
-async function loadModel(name) {
-    if (!fromDisk) return loader.loadAsync(`models/${name}.glb?v=${MODEL_VERSION}`);
+/** Small "Loading 3D · 45%" indicator shown while a model downloads. */
+function progressBadge(host) {
+    const el = document.createElement("div");
+    el.className = "scene3d-loader";
+    el.setAttribute("role", "status");
+    el.innerHTML = '<span class="scene3d-loader-ring"></span><span class="scene3d-loader-text">Loading 3D</span>';
+    host.append(el);
+    const text = el.querySelector(".scene3d-loader-text");
+    return {
+        update(e) {
+            if (e && e.lengthComputable && e.total) {
+                const pct = Math.round((e.loaded / e.total) * 100);
+                el.style.setProperty("--p", pct);
+                text.textContent = `Loading 3D · ${pct}%`;
+            }
+        },
+        done() {
+            el.classList.add("is-done");
+            window.setTimeout(() => el.remove(), 500);
+        },
+        fail() {
+            el.classList.add("is-failed");
+            text.textContent = "3D view unavailable · refresh to retry";
+        },
+    };
+}
+
+async function loadModel(name, onProgress) {
+    if (!fromDisk) return loader.loadAsync(`models/${name}.bin?v=${MODEL_VERSION}`, onProgress);
     const data = await loadEmbeddedModels();
     const bin = Uint8Array.from(atob(data[name]), (c) => c.charCodeAt(0));
     return loader.parseAsync(bin.buffer, "");
 }
 
-const hasWebGL = (() => {
+/** WebGL support and the name of the graphics chip the browser will draw with. */
+const gpu = (() => {
     try {
         const c = document.createElement("canvas");
-        return !!(c.getContext("webgl2") || c.getContext("webgl"));
+        const gl = c.getContext("webgl2") || c.getContext("webgl");
+        if (!gl) return { ok: false, name: "" };
+        const ext = gl.getExtension("WEBGL_debug_renderer_info");
+        const name = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
+        gl.getExtension("WEBGL_lose_context")?.loseContext(); // free the test context
+        return { ok: true, name };
     } catch {
-        return false;
+        return { ok: false, name: "" };
     }
 })();
+const hasWebGL = gpu.ok;
+
+/** Software rendering (no graphics acceleration): keep the 3D very light. */
+const softwareGPU = /swiftshader|llvmpipe|software|basic render/i.test(gpu.name);
+
+/**
+ * Phones, tablets, integrated laptop graphics (e.g. Intel UHD / Iris, which Chrome often
+ * uses even on laptops that also have a gaming GPU) and modest computers get a lighter
+ * 3D setup so the page always scrolls smoothly.
+ */
+const lite = (() => {
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const cores = navigator.hardwareConcurrency || 8;
+    const memory = navigator.deviceMemory || 8;
+    const saveData = navigator.connection && navigator.connection.saveData;
+    const integrated = /intel|iris|uhd graphics|mali|adreno|powervr|radeon\(tm\) graphics|vega \d+ graphics/i.test(gpu.name);
+    return coarse || cores <= 4 || memory <= 4 || !!saveData || integrated || softwareGPU;
+})();
+const AMBIENT_FPS = softwareGPU ? 15 : lite ? 24 : 30;
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const damp = (current, target, lambda, dt) =>
@@ -59,11 +111,22 @@ const damp = (current, target, lambda, dt) =>
 
 function makeRenderer(host, maxPixelRatio = 1.75) {
     const renderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: !softwareGPU,
         alpha: true,
         powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
+    const cap = softwareGPU ? Math.min(maxPixelRatio, 0.75) : maxPixelRatio;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, cap));
+    // If the graphics driver drops the 3D (e.g. an overloaded GPU), say so instead of a blank frame.
+    renderer.domElement.addEventListener("webglcontextlost", (e) => {
+        e.preventDefault();
+        host.classList.add("scene3d-lost");
+        host.closest(".cc")?.classList.add("is-3d-lost");
+        const note = document.createElement("p");
+        note.className = "scene3d-loader is-failed";
+        note.textContent = "3D view paused by the browser · refresh to retry";
+        host.append(note);
+    });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.shadowMap.enabled = true;
@@ -72,6 +135,41 @@ function makeRenderer(host, maxPixelRatio = 1.75) {
     renderer.domElement.className = "scene3d-canvas";
     renderer.domElement.setAttribute("aria-hidden", "true");
     return renderer;
+}
+
+/**
+ * Watches real frame times. If a device still struggles (slower than ~22 fps on
+ * average), lower the resolution and turn shadows off: once, then once more if needed.
+ */
+function makeGovernor(renderer) {
+    let samples = 0;
+    let total = 0;
+    let steps = 0;
+    // `ms` is the browser's real frame interval (every animation frame, drawn or not),
+    // so the calm idle frame rate is never mistaken for a slow device
+    return (ms) => {
+        if (steps >= 2 || !(ms > 0) || ms > 250) return; // ignore tab switches and one-off stalls
+        total += ms;
+        samples++;
+        if (samples < 60) return;
+        const avg = total / samples;
+        samples = 0;
+        total = 0;
+        if (avg > 45) {
+            steps++;
+            renderer.setPixelRatio(Math.max(0.6, renderer.getPixelRatio() * 0.7));
+            renderer.shadowMap.enabled = false;
+            renderer.shadowMap.needsUpdate = true;
+        }
+    };
+}
+
+/** Prepare shaders up front, but never wait more than `ms` (some GPUs/drivers stall here). */
+function compileWithin(renderer, scene, camera, ms = 3000) {
+    return Promise.race([
+        renderer.compileAsync(scene, camera).catch(() => {}),
+        new Promise((resolve) => setTimeout(resolve, ms)),
+    ]);
 }
 
 function studioEnvironment(renderer) {
@@ -100,9 +198,10 @@ function loopWhileVisible(el, frame) {
     let last = 0;
     const tick = (now) => {
         raf = requestAnimationFrame(tick);
-        const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
+        const ms = now - last;
+        const dt = Math.min(0.05, ms / 1000 || 0.016);
         last = now;
-        frame(dt, now / 1000);
+        frame(dt, now / 1000, ms);
     };
     const sync = () => {
         const run = onScreen && !document.hidden;
@@ -147,7 +246,7 @@ async function initHeroDevice() {
     const host = document.querySelector("[data-device-3d]");
     if (!host) return;
 
-    const renderer = makeRenderer(host);
+    const renderer = makeRenderer(host, lite ? 1.25 : 1.5);
     const scene = new THREE.Scene();
     scene.environment = studioEnvironment(renderer);
     scene.environmentIntensity = 0.95;
@@ -161,7 +260,7 @@ async function initHeroDevice() {
     const key = new THREE.DirectionalLight(0xffffff, 1.6);
     key.position.set(-2.5, 5.5, 4);
     key.castShadow = true;
-    key.shadow.mapSize.set(1024, 1024);
+    key.shadow.mapSize.set(lite ? 512 : 1024, lite ? 512 : 1024);
     key.shadow.radius = 8;
     key.shadow.bias = -0.0004;
     Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 0.5, far: 15 });
@@ -178,7 +277,14 @@ async function initHeroDevice() {
     floor.receiveShadow = true;
     scene.add(floor);
 
-    const gltf = await loadModel("vitalcheer-device");
+    const badge = progressBadge(host);
+    let gltf;
+    try {
+        gltf = await loadModel("vitalcheer-device", badge.update);
+    } catch (err) {
+        badge.fail();
+        throw err;
+    }
     const model = gltf.scene;
     prepareDecals(model);
     model.traverse((o) => {
@@ -241,10 +347,13 @@ async function initHeroDevice() {
 
     fitRenderer(host, renderer, camera);
     // compile every shader up front so the first frames (and scrolling back) never stutter
-    await renderer.compileAsync(scene, camera);
+    await compileWithin(renderer, scene, camera);
     host.appendChild(renderer.domElement);
     host.closest(".product-stage")?.classList.add("has-3d");
-    requestAnimationFrame(() => renderer.domElement.classList.add("is-ready"));
+    badge.done();
+    // fade the canvas in (no rAF here: it never fires in background tabs)
+    void renderer.domElement.offsetWidth;
+    renderer.domElement.classList.add("is-ready");
 
     // ---- interaction: drag to turn (horizontal); the device never opens up
     let drag = 0;
@@ -274,15 +383,34 @@ async function initHeroDevice() {
     canvas.addEventListener("pointercancel", endDrag);
 
     const hero = document.querySelector(".hero");
+    // hero position is cached (reading layout every frame slows scrolling)
+    let heroTop = 0;
+    let heroHeight = 1;
+    const measureHero = () => {
+        heroTop = hero.getBoundingClientRect().top + window.scrollY;
+        heroHeight = Math.max(1, hero.offsetHeight);
+    };
+    measureHero();
+    window.addEventListener("resize", measureHero);
+    window.addEventListener("load", measureHero);
+
     let intro = 0;
     let turn = 0;
+    let pending = 0;
+    const governor = makeGovernor(renderer);
 
-    loopWhileVisible(host, (dt, t) => {
+    loopWhileVisible(host, (frameDt, t, frameMs) => {
+        governor(frameMs);
         const still = reduceMotion.matches;
-        intro = still ? 1 : damp(intro, 1, 2.2, dt);
+        const scrollP = clamp01((window.scrollY - heroTop) / (heroHeight * 0.75));
+        // full speed only while something moves; otherwise a calm ambient frame rate
+        const busy = dragging || Math.abs(dragVelocity) > 0.002 || Math.abs(turn - scrollP) > 0.0005 || intro < 0.999;
+        pending += frameDt;
+        if (!busy && pending < 1 / AMBIENT_FPS) return;
+        const dt = Math.min(0.1, pending);
+        pending = 0;
 
-        const rect = hero.getBoundingClientRect();
-        const scrollP = clamp01(-rect.top / (rect.height * 0.75));
+        intro = still ? 1 : damp(intro, 1, 2.2, dt);
         turn = still ? scrollP : damp(turn, scrollP, 4, dt);
 
         if (!dragging) {
@@ -330,7 +458,8 @@ async function initHeroDevice() {
 const IV_MATERIALS = {
     BagPVC: { transparent: true, opacity: 0.2, roughness: 0.16, clearcoat: 1, clearcoatRoughness: 0.12, depthWrite: false, side: THREE.DoubleSide },
     BagSeal: { transparent: true, opacity: 0.42, roughness: 0.38, depthWrite: false },
-    Fluid: { transmission: 1, thickness: 0.6, roughness: 0.03, ior: 1.33, color: 0xeefcfa, attenuationColor: new THREE.Color("#9fd8ee"), attenuationDistance: 2.2 },
+    // light "fluid" look without transmission (transmission draws the whole scene twice per frame)
+    Fluid: { transparent: true, opacity: 0.62, roughness: 0.06, clearcoat: 1, clearcoatRoughness: 0.08, color: 0xbfe6f4, depthWrite: false },
     ChamberClear: { transparent: true, opacity: 0.18, roughness: 0.04, clearcoat: 1, depthWrite: false, side: THREE.DoubleSide },
     TubePVC: { transparent: true, opacity: 0.26, roughness: 0.08, clearcoat: 1, depthWrite: false },
     ClampHousing: { transparent: true, opacity: 0.9, roughness: 0.3, clearcoat: 0.6 },
@@ -382,7 +511,11 @@ async function initIVScene() {
     if (!host) return;
 
     // glass + fluid materials are heavy, so this scene renders at a lower pixel ratio
-    const renderer = makeRenderer(host, 1.25);
+    const renderer = makeRenderer(host, lite ? 1 : 1.25);
+    // shadows: none in lite mode; otherwise only re-rendered when the scene changes
+    renderer.shadowMap.enabled = !lite;
+    renderer.shadowMap.autoUpdate = false;
+    renderer.shadowMap.needsUpdate = true;
     const scene = new THREE.Scene();
     scene.environment = studioEnvironment(renderer);
     scene.environmentIntensity = 0.42;
@@ -397,7 +530,7 @@ async function initIVScene() {
     keyLight.position.set(-5, 12, 9);
     keyLight.target.position.set(0.5, 2, 0);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(1024, 1024);
+    keyLight.shadow.mapSize.set(lite ? 512 : 1024, lite ? 512 : 1024);
     keyLight.shadow.bias = -0.0006;
     keyLight.shadow.radius = 6;
     scene.add(keyLight, keyLight.target);
@@ -406,10 +539,25 @@ async function initIVScene() {
     scene.add(rimLight);
     scene.add(new THREE.HemisphereLight(0xd9f6f2, 0x03201e, 0.45));
 
-    const gltf = await loadModel("iv-set");
+    const badge = progressBadge(host);
+    let gltf;
+    try {
+        gltf = await loadModel("iv-set", badge.update);
+    } catch (err) {
+        badge.fail();
+        throw err;
+    }
     const root = gltf.scene;
     retuneMaterials(root);
     prepareDecals(root);
+    // make sure nothing still uses transmission (the heaviest effect for integrated GPUs)
+    root.traverse((o) => {
+        if (o.isMesh && o.material && o.material.transmission) {
+            o.material.transmission = 0;
+            o.material.transparent = true;
+            o.material.opacity = Math.min(o.material.opacity ?? 1, 0.6);
+        }
+    });
     root.traverse((o) => {
         if (o.isMesh) {
             const mat = o.material;
@@ -424,10 +572,15 @@ async function initIVScene() {
     const wardCopies = [];
     const base = root.clone(true);
     for (const n of ["Patient", "Clipboard", "Pump"]) base.getObjectByName(n)?.removeFromParent();
-    for (const [x, z, ry] of [[-6.5, -6, 0.3], [8, -7.5, -0.4], [-1.5, -13, 0.1], [12, -15, -0.2]]) {
+    const wardSpots = [[-6.5, -6, 0.3], [8, -7.5, -0.4], [-1.5, -13, 0.1], [12, -15, -0.2]];
+    for (const [x, z, ry] of lite ? wardSpots.slice(0, 2) : wardSpots) {
         const copy = base.clone(true);
         copy.position.set(x, 0, z);
         copy.rotation.y = ry;
+        copy.visible = false; // drawn only when challenge 04 is shown
+        copy.traverse((o) => {
+            if (o.isMesh) o.castShadow = false;
+        });
         scene.add(copy);
         wardCopies.push(copy);
     }
@@ -483,10 +636,13 @@ async function initIVScene() {
     scene.add(ring);
 
     fitRenderer(host, renderer, camera);
-    await renderer.compileAsync(scene, camera);
+    await compileWithin(renderer, scene, camera);
     host.prepend(renderer.domElement);
     section.classList.add("has-3d");
-    requestAnimationFrame(() => renderer.domElement.classList.add("is-ready"));
+    badge.done();
+    // fade the canvas in (no rAF here: it never fires in background tabs)
+    void renderer.domElement.offsetWidth;
+    renderer.domElement.classList.add("is-ready");
     if (new URLSearchParams(location.search).has("debug3d")) {
         window.__iv = { THREE, scene, camera, renderer, root };
     }
@@ -502,6 +658,7 @@ async function initIVScene() {
     };
     const hotspots = [...section.querySelectorAll(".cc-hot")];
     const tmp = new THREE.Vector3();
+    const placed = new Map(); // last written values, so the DOM is only touched on change
     const placeHotspots = () => {
         for (const btn of hotspots) {
             const anchor = anchors[btn.dataset.ccGo];
@@ -510,8 +667,13 @@ async function initIVScene() {
             if (btn.dataset.ccGo === "4") tmp.y += 1.2;
             tmp.project(camera);
             const inView = tmp.z < 1 && Math.abs(tmp.x) < 0.92 && Math.abs(tmp.y) < 0.86;
-            btn.style.setProperty("--x", `${((tmp.x + 1) / 2) * 100}%`);
-            btn.style.setProperty("--y", `${((1 - tmp.y) / 2) * 100}%`);
+            const x = `${(((tmp.x + 1) / 2) * 100).toFixed(1)}%`;
+            const y = `${(((1 - tmp.y) / 2) * 100).toFixed(1)}%`;
+            const prev = placed.get(btn);
+            if (prev && prev.x === x && prev.y === y && prev.v === inView) continue;
+            placed.set(btn, { x, y, v: inView });
+            btn.style.setProperty("--x", x);
+            btn.style.setProperty("--y", y);
             btn.classList.toggle("is-offscreen", !inView);
         }
     };
@@ -532,9 +694,33 @@ async function initIVScene() {
     const targetPos = new THREE.Vector3();
     const targetLook = new THREE.Vector3();
 
-    loopWhileVisible(host, (dt, t) => {
+    let lastStage = -1;
+    let shadowFrames = 0;
+    let pending = 0;
+    let lastPointer = "";
+    const governor = makeGovernor(renderer);
+    loopWhileVisible(host, (frameDt, t, frameMs) => {
+        governor(frameMs);
         const still = reduceMotion.matches;
         const stage = Number(section.dataset.stage) || 0;
+        // full speed while the camera travels or the pointer moves; calm frame rate otherwise
+        const pointerKey = `${pointerX.toFixed(3)},${pointerY.toFixed(3)}`;
+        const travelling = camPos.distanceToSquared(targetPos) > 0.0004 || camLook.distanceToSquared(targetLook) > 0.0004;
+        const busy = stage !== lastStage || travelling || pointerKey !== lastPointer || shadowFrames > 0;
+        lastPointer = pointerKey;
+        pending += frameDt;
+        if (!busy && pending < 1 / AMBIENT_FPS) return;
+        const dt = Math.min(0.1, pending);
+        pending = 0;
+        if (stage !== lastStage) {
+            lastStage = stage;
+            shadowFrames = 45; // refresh shadows while the pump fades in/out
+            for (const copy of wardCopies) copy.visible = stage === 4;
+        }
+        if (shadowFrames > 0) {
+            shadowFrames--;
+            renderer.shadowMap.needsUpdate = true;
+        }
         const shot = SHOTS[stage] || SHOTS[0];
 
         targetPos.set(...shot.pos);
@@ -589,6 +775,16 @@ async function initIVScene() {
     });
 }
 
+if (!hasWebGL) {
+    // very old or locked-down browsers: say so instead of leaving empty space
+    for (const host of document.querySelectorAll("[data-device-3d], .cc-visual")) {
+        const note = document.createElement("p");
+        note.className = "scene3d-loader is-failed";
+        note.textContent = "3D view needs a browser with WebGL";
+        host.append(note);
+    }
+}
+
 if (hasWebGL) {
     // Hero first (it is on screen), then the IV scene: straight away if the reader
     // is already near it (e.g. reloaded mid-page), otherwise once the hero is ready.
@@ -601,16 +797,25 @@ if (hasWebGL) {
         initIVScene().catch((err) => console.warn("3D IV scene unavailable:", err));
     };
     if (ivSection) {
+        // start when the reader gets near the section...
         const near = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
                 near.disconnect();
                 startIV();
             }
-        }, { rootMargin: "1200px 0px" });
+        }, { rootMargin: "1500px 0px" });
         near.observe(ivSection);
+        // ...with a plain scroll check as a backup
+        const onScroll = () => {
+            if (ivSection.getBoundingClientRect().top < window.innerHeight + 1500) {
+                window.removeEventListener("scroll", onScroll);
+                startIV();
+            }
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
     }
-    hero.then(() => {
-        const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 300));
-        idle(startIV);
-    });
+    // ...or shortly after the hero is ready. (Not requestIdleCallback: while the hero
+    // animates, some browsers never report an idle moment, so it could never start.)
+    hero.then(() => setTimeout(startIV, 600));
+    if (new URLSearchParams(location.search).has("debug3d")) window.__vcStartIV = startIV;
 }

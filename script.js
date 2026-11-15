@@ -39,10 +39,8 @@ const featureProgress = [
 let activeFeature = 0;
 let featureStart = 0;
 let featureStep = 1;
-let featureLock = false;
-let featureUnlockTimer;
-// True while a menu/anchor link is smooth-scrolling the page, so the
-// feature-story scroll snapping doesn't hijack the jump midway.
+// True while a menu/anchor link is smooth-scrolling the page, so the feature
+// pages don't flick through every slide during the jump.
 let navScrolling = false;
 let navScrollTimer;
 
@@ -86,47 +84,16 @@ const setFeature = (index, instant = false) => {
     });
 };
 
-const snapToFeature = (index) => {
-    const nextIndex = Math.max(
-        0,
-        Math.min(featurePages.length - 1, index)
-    );
-
-    if (featureLock || nextIndex === activeFeature) return;
-
-    featureLock = true;
-    setFeature(nextIndex);
-
-    navigator.vibrate?.([10, 25, 10]);
-
-    smoothScrollTo(featureStart + nextIndex * featureStep, { duration: 0.8, lock: true });
-
-    window.clearTimeout(featureUnlockTimer);
-
-    featureUnlockTimer = window.setTimeout(() => {
-        featureLock = false;
-    }, 900);
-};
-
+// The feature story follows the scroll position: the stage stays pinned and the
+// page changes as you scroll through it. Nothing grabs the wheel or touch, so
+// scrolling is never "stuck" (the old version snapped one page per wheel tick).
 const updateFeatureStory = () => {
-    if (!featureStory || featureLock || navScrolling) return;
+    if (!featureStory || navScrolling) return;
 
     const position = (window.scrollY - featureStart) / featureStep;
-    const lastIndex = featurePages.length - 1;
+    const index = Math.max(0, Math.min(featurePages.length - 1, Math.round(position)));
 
-    // Outside the feature story: keep the right page showing, but never
-    // pull the reader back into the story.
-    if (position < -0.5 || position > lastIndex + 0.5) {
-        const edge = position < 0 ? 0 : lastIndex;
-        if (edge !== activeFeature) setFeature(edge, true);
-        return;
-    }
-
-    const index = Math.round(position);
-
-    if (index !== activeFeature) {
-        snapToFeature(index);
-    }
+    if (index !== activeFeature) setFeature(index);
 };
 
 measureFeatureStory();
@@ -189,7 +156,6 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 
         navScrolling = true;
         navTarget = top;
-        featureLock = false;
         armNavTimer(4000);
 
         smoothScrollTo(top, { onComplete: finishNavScroll });
@@ -197,14 +163,13 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     });
 });
 
-// Footer "Back to top": glides up (through the feature story without snapping)
+// Footer "Back to top": glides up to the hero
 document.querySelectorAll("[data-scroll-top]").forEach((button) => {
     button.addEventListener("click", () => {
         measureFeatureStory();
         if (featureStory) setFeature(0, true);
         navScrolling = true;
         navTarget = 0;
-        featureLock = false;
         armNavTimer(4000);
         smoothScrollTo(0, { duration: 1.6, onComplete: finishNavScroll });
         history.replaceState(null, "", location.pathname + location.search);
@@ -218,95 +183,9 @@ window.addEventListener("scroll", updateFeatureStory, {
 });
 
 window.addEventListener("resize", () => {
-    const wasInside = isInsideFeatureStory();
     measureFeatureStory();
-
-    // Only re-snap when the reader is actually inside the feature story.
-    if (!wasInside || navScrolling) return;
-
-    const snapTop = featureStart + activeFeature * featureStep;
-    if (lenis) lenis.scrollTo(snapTop, { immediate: true, force: true });
-    else window.scrollTo({ top: snapTop });
+    updateFeatureStory();
 });
-
-const isInsideFeatureStory = () => {
-    const storyEnd =
-        featureStart + featureStep * (featurePages.length - 1);
-
-    return (
-        window.scrollY >= featureStart - 2 &&
-        window.scrollY <= storyEnd + 2
-    );
-};
-
-window.addEventListener(
-    "wheel",
-    (event) => {
-        if (navScrolling || !isInsideFeatureStory()) return;
-
-        if (featureLock) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            return;
-        }
-
-        const direction = event.deltaY > 0 ? 1 : -1;
-        const nextIndex = activeFeature + direction;
-        const canAdvance =
-            nextIndex >= 0 && nextIndex < featurePages.length;
-
-        if (canAdvance) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            snapToFeature(nextIndex);
-        }
-    },
-    { passive: false, capture: true }
-);
-
-let touchStartY = null;
-
-window.addEventListener(
-    "touchstart",
-    (event) => {
-        if (isInsideFeatureStory()) {
-            touchStartY = event.touches[0].clientY;
-        }
-    },
-    { passive: true }
-);
-
-window.addEventListener(
-    "touchend",
-    (event) => {
-        if (
-            touchStartY === null ||
-            navScrolling ||
-            !isInsideFeatureStory() ||
-            featureLock
-        ) {
-            return;
-        }
-
-        const distance =
-            touchStartY - event.changedTouches[0].clientY;
-
-        touchStartY = null;
-
-        if (Math.abs(distance) < 30) return;
-
-        const nextIndex =
-            activeFeature + (distance > 0 ? 1 : -1);
-
-        if (
-            nextIndex >= 0 &&
-            nextIndex < featurePages.length
-        ) {
-            snapToFeature(nextIndex);
-        }
-    },
-    { passive: true }
-);
 
 let cursorX = 0;
 let cursorY = 0;

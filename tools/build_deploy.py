@@ -22,8 +22,16 @@ SITE = os.path.join(OUT, "public_html")
 ZIP = os.path.join(OUT, "vitalcheer-public_html.zip")
 
 PAGES = ["index.html", "terms-of-use.html", "privacy-policy.html"]
-# loaded by JavaScript rather than by an HTML tag
-EXTRA = ["models/vitalcheer-device.glb", "models/iv-set.glb"]
+# not referenced by a src/href (loaded by JavaScript, crawlers, the manifest or structured data)
+EXTRA = [
+    "models/vitalcheer-device.bin",
+    "models/iv-set.bin",
+    "robots.txt",
+    "sitemap.xml",
+    "images/og-image.jpg",
+    "images/favicon-512.png",
+    "images/icon-maskable-512.png",
+]
 HTACCESS = os.path.join(ROOT, "tools", "deploy", ".htaccess")
 
 REF = re.compile(r'(?:src|href)="([^"]+)"')

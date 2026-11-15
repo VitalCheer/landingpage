@@ -1,4 +1,5 @@
-// Compress the Blender exports (tools/3d/out/*.glb) into small web models (models/*.glb),
+// Compress the Blender exports (tools/3d/out/*.glb) into small web models (models/*.bin: glTF binary
+// files saved with a .bin extension, which Cloudflare caches automatically; .glb is not cached by default),
 // and write js/models-data.js so the 3D also works when index.html is opened from disk (file://).
 //
 //   npm run build:models
@@ -10,8 +11,8 @@ import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from "meshoptimizer
 import sharp from "sharp";
 
 const MODELS = [
-    { name: "vitalcheer-device", ratio: 0.7, error: 0.0004 },
-    { name: "iv-set", ratio: 0.6, error: 0.0008 },
+    { name: "vitalcheer-device", ratio: 0.5, error: 0.0008 },
+    { name: "iv-set", ratio: 0.4, error: 0.0015 },
 ];
 
 await Promise.all([MeshoptDecoder.ready, MeshoptEncoder.ready, MeshoptSimplifier.ready]);
@@ -22,7 +23,7 @@ const io = new NodeIO()
 const embedded = {};
 for (const { name, ratio, error } of MODELS) {
     const src = `tools/3d/out/${name}.glb`;
-    const dst = `models/${name}.glb`;
+    const dst = `models/${name}.bin`;
     const doc = await io.read(src);
     await doc.transform(
         dedup(),
@@ -31,9 +32,11 @@ for (const { name, ratio, error } of MODELS) {
         simplify({ simplifier: MeshoptSimplifier, ratio, error }),
         textureCompress({ encoder: sharp, targetFormat: "webp", resize: [1024, 1024] }),
         quantize(),
-        meshopt({ encoder: MeshoptEncoder, level: "medium" }),
+        // "high" adds meshopt filters (smaller files; decoded natively by three.js)
+        meshopt({ encoder: MeshoptEncoder, level: "high" }),
     );
-    await io.write(dst, doc);
+    // always the single-file binary format (the .bin extension would otherwise select multi-file glTF)
+    await writeFile(dst, await io.writeBinary(doc));
     const before = (await stat(src)).size;
     const after = (await stat(dst)).size;
     console.log(`${name}: ${(before / 1024).toFixed(0)} KB -> ${(after / 1024).toFixed(0)} KB`);
